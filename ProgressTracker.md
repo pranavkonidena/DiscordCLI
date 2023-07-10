@@ -1,0 +1,1 @@
+I am working on making a manual command line argument parser for the time being. Pulkit pls work on implementing the register feature using the overall schematic I sent u. (try making it modular.)
