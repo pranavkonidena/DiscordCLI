@@ -6,15 +6,16 @@ List parser(List<String> arguments, String target, int NumberOfElements) {
       target_index = i;
     }
   }
-  var key_value = [];
+  var key_value = "";
   for (int l = target_index + 1; l <= target_index + NumberOfElements; l++) {
-    key_value.add(arguments.elementAt(l));
+    key_value += arguments.elementAt(l);
+    if(l < target_index + NumberOfElements){
+       key_value += "_";
+    }
+   
   }
 
-  var entry = {
-    "key_word": target,
-    "values": key_value,
-  };
+  var entry = {target: key_value};
   results_parsed.add(entry);
   return results_parsed;
 }
