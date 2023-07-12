@@ -2,8 +2,6 @@ class Student {
   List<String> servers = [];
   Map<String, String> channel_category = {};
   String username_student = "";
-
-  Student(String username) {
-    username_student = username;
-  }
+  bool is_login = false;
+  final Map<String, bool> student_loggedInMap = {};
 }

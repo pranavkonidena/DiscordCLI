@@ -1,29 +1,23 @@
 import 'dart:io';
+void main() {}
 
-void main() {
-  createFile("HI I am testing something!");
-}
-
-void createFile(var data) {
+void createFile(var data , String path) {
   try {
-    String path = "./users.txt";
     File file = File(path);
     file.writeAsStringSync(data);
-    print("File created successfully.");
   } catch (e) {
     print("Error occoured : ${e}");
   }
-
 }
 
-void appendToFile(var data , String filePath){
+void appendToFile(var data, String filePath) async {
   var file = File(filePath);
-  var stream = file.openWrite(mode: FileMode.append);
+  var stream = await file.openWrite(mode: FileMode.append);
   stream.write(data);
-  stream.close().then((_) {
-  }).catchError((error) {
-    print('An error occurred while appending the content: $error');
-  });
+  // stream.close().then((_) {
+  // }).catchError((error) {
+  //   print(error);
+  // });
 }
 
 String readFile(String filePath) {
