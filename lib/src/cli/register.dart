@@ -23,7 +23,7 @@ void registerUser(List<String> args) async {
   try {
     var results = parser.parse(args);
     if (results["register"] == true) {
-      String dbPath = "/Users/Pranav_1/Desktop/dev/IMG_Assignment_Dart/lib/src/models/users.db";
+      String dbPath = "src/models/users.db";
       Database db = await databaseFactoryIo.openDatabase(dbPath);
       var store = intMapStoreFactory.store('users');
       var bytes = utf8.encode(results['password']);
