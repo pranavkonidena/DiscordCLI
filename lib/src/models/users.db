@@ -1,0 +1,8 @@
+{"version":1,"sembast":1}
+{"key":1,"value":{"first":"test"}}
+{"key":2,"value":{"first":"test"}}
+{"key":3,"value":{"first":"test"}}
+{"key":4,"value":{"first":"test"}}
+{"key":1,"store":"users","value":{"12":"12"}}
+{"key":2,"store":"users","value":{"22":"12"}}
+{"key":3,"store":"users","value":{"22":"6b51d431df5d7f141cbececcf79edf3dd861c3b4069f0b11661a3eefacbba918"}}

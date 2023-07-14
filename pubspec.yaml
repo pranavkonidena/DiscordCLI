@@ -1,0 +1,19 @@
+name: discord_cli
+description: A sample command-line application.
+version: 1.0.0
+repository: https://github.com/pranavkonidena/IMG_Dart_Ass
+
+environment:
+  sdk: ^3.0.6
+
+# Add regular dependencies here.
+dependencies:
+  args: ^2.4.2
+  crypto: ^3.0.3
+  cryptography: ^2.5.0
+  sembast: ^3.4.9
+  # path: ^1.8.0
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.21.0
