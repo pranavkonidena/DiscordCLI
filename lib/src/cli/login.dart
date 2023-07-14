@@ -32,7 +32,7 @@ void loginUser(List<String> args) async {
     var results = parser.parse(args);
     if (results['login'] == true) {
       String dbPath =
-          "/Users/Pranav_1/Desktop/dev/IMG_Assignment_Dart/lib/src/models/users.db";
+          "src/db/users.db";
       Database db = await databaseFactoryIo.openDatabase(dbPath);
       var store = intMapStoreFactory.store('users');
       var finder =
