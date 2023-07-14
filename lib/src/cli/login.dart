@@ -5,7 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:sembast/sembast_io.dart';
 import 'package:sembast/sembast.dart';
 import 'package:args/args.dart';
-import 'register.dart';
+import '../models/user.dart';
 import 'dart:convert';
 
 void loginUser(List<String> args) async {
@@ -31,8 +31,7 @@ void loginUser(List<String> args) async {
   try {
     var results = parser.parse(args);
     if (results['login'] == true) {
-      String dbPath =
-          "src/db/users.db";
+      String dbPath = "src/db/users.db";
       Database db = await databaseFactoryIo.openDatabase(dbPath);
       var store = intMapStoreFactory.store('users');
       var finder =
@@ -46,6 +45,9 @@ void loginUser(List<String> args) async {
         var digest = sha256.convert(bytes);
         if (digest.toString() == hashedPassword) {
           print("User ${results['username']} logged in succesfully");
+          loggedinUser user = loggedinUser();
+          user.username = results['username'];
+          if()
         } else {
           print("Please enter the correct password");
         }

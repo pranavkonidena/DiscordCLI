@@ -6,6 +6,7 @@ import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 import 'dart:async';
 import 'package:cryptography/cryptography.dart';
+import '../models/user.dart';
 
 void registerUser(List<String> args) async {
   var parser = ArgParser();
@@ -38,6 +39,8 @@ void registerUser(List<String> args) async {
               {"username": results['username'], "password": digest.toString()});
         });
         print("User ${results["username"]} registered succesfully");
+        User user = User();
+        user.username = results['username'];
       } else {
         print("User ${results["username"]} was registered previously");
       }
