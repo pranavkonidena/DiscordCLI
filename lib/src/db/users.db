@@ -1,6 +1,2 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"users","value":{"username":"Pranav","password":"6b51d431df5d7f141cbececcf79edf3dd861c3b4069f0b11661a3eefacbba918"}}
-{"key":2,"store":"users","value":{"username":"Pranv","password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
-{"key":3,"store":"users","value":{"username":"Pv","password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
-{"key":4,"store":"users","value":{"username":"Pva","password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
-{"key":5,"store":"users","value":{"username":"Pa","password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
+{"key":1,"store":"users","value":{"username":"Pranav","password":"21f262e357c744d6aef26286fca6432960f8d21b06ad458fe8907daec0a9476d"}}

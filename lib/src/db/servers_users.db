@@ -1,0 +1,6 @@
+{"version":1,"sembast":1}
+{"key":1,"store":"servers_users","value":{"username":"Pranav","servers":"test"}}
+{"key":1,"deleted":true,"store":"servers_users"}
+{"key":2,"store":"servers_users","value":{"username":"Pranav","servers":"123"}}
+{"key":2,"deleted":true,"store":"servers_users"}
+{"key":3,"store":"servers_users","value":{"username":"Pranav","servers":"1234"}}

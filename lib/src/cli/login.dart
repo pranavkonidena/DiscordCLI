@@ -7,8 +7,9 @@ import 'package:sembast/sembast.dart';
 import 'package:args/args.dart';
 import '../models/user.dart';
 import 'dart:convert';
+import '../cli/joinServer.dart';
 
-void loginUser(List<String> args) async {
+loginUser(List<String> args) async {
   var parser = ArgParser();
   parser.addFlag(
     "login",
@@ -28,8 +29,13 @@ void loginUser(List<String> args) async {
     mandatory: true,
   );
 
+  parser.addOption(
+    "role",
+    mandatory: false,
+    defaultsTo: "member",
+  );
+  var results = parser.parse(args);
   try {
-    var results = parser.parse(args);
     if (results['login'] == true) {
       String dbPath = "src/db/users.db";
       Database db = await databaseFactoryIo.openDatabase(dbPath);
@@ -44,16 +50,28 @@ void loginUser(List<String> args) async {
         var bytes = utf8.encode(results['password']);
         var digest = sha256.convert(bytes);
         if (digest.toString() == hashedPassword) {
-          print("User ${results['username']} logged in succesfully");
-          loggedinUser user = loggedinUser();
+          loggedinUser user = loggedinUser(results["role"]);
           user.username = results['username'];
-          if()
+          String dbPath = "src/db/servers_users.db";
+          Database db = await databaseFactoryIo.openDatabase(dbPath);
+          var store = intMapStoreFactory.store('servers_users');
+          int key;
+          await db.transaction((txn) async {
+            key = await store.add(txn, {
+              "username": results['username'],
+              "servers" : null,
+            });
+          });
+          print("User ${results['username']} logged in succesfully");
+          
         } else {
           print("Please enter the correct password");
+          return null;
         }
       }
     } else {
       print("Read docs");
+
     }
   } catch (e) {
     print(e);
