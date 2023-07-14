@@ -1,8 +1,5 @@
 {"version":1,"sembast":1}
-{"key":1,"value":{"first":"test"}}
-{"key":2,"value":{"first":"test"}}
-{"key":3,"value":{"first":"test"}}
-{"key":4,"value":{"first":"test"}}
-{"key":1,"store":"users","value":{"12":"12"}}
-{"key":2,"store":"users","value":{"22":"12"}}
-{"key":3,"store":"users","value":{"22":"6b51d431df5d7f141cbececcf79edf3dd861c3b4069f0b11661a3eefacbba918"}}
+{"key":1,"store":"users","value":{"username":"Pranav","password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
+{"key":2,"store":"users","value":{"username":"Pna","password":"f4bf9f7fcbedaba0392f108c59d8f4a38b3838efb64877380171b54475c2ade8"}}
+{"key":3,"store":"users","value":{"username":"Pn","password":"f4bf9f7fcbedaba0392f108c59d8f4a38b3838efb64877380171b54475c2ade8"}}
+{"key":4,"store":"users","value":{"username":"Pn123","password":"f4bf9f7fcbedaba0392f108c59d8f4a38b3838efb64877380171b54475c2ade8"}}

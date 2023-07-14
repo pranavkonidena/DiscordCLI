@@ -1,7 +1,5 @@
-import 'dart:io';
-import 'package:args/args.dart';
+import './src/cli/register.dart';
 
-
-void main() {
-  
+void main(List<String> arguments) {
+  registerUser(arguments);
 }
