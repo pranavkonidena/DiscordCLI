@@ -164,6 +164,10 @@ class loggedinUser extends User {
     Database dbU =
         await databaseFactoryIo.openDatabase("src/db/servers_users.db");
     var store = intMapStoreFactory.store('users');
+    var store1 = intMapStoreFactory.store("servers_users");
+    var finder_new = Finder(filter: Filter.notNull("username"));
+    var finder_new_record = await store1.find(dbU, finder: finder_new);
+    
     var finder = Finder(filter: Filter.equals("username", recipient));
     var findRecord = await store.findFirst(db, finder: finder);
     if (findRecord == null) {
@@ -171,9 +175,13 @@ class loggedinUser extends User {
     } else {
       dynamic map = cloneMap(findRecord.value);
       await store.delete(db, finder: finder);
+      var entry = {
+        "sender" : finder_new_record[0].value["username"],
+        "message" : results["message"],
+      };
       List<dynamic> duplicates = [];
       duplicates = map["messages"];
-      duplicates.add(results["message"]);
+      duplicates.add(entry);
       map["messages"] = duplicates;
       await store.add(db, map);
       print("Message sent succesfully");
