@@ -50,32 +50,38 @@ loginUser(List<String> args) async {
         var bytes = utf8.encode(results['password']);
         var digest = sha256.convert(bytes);
         if (digest.toString() == hashedPassword) {
-          loggedinUser user = loggedinUser();
-          user.username = results['username'];
           String dbPath = "src/db/servers_users.db";
           Database db = await databaseFactoryIo.openDatabase(dbPath);
           var store = intMapStoreFactory.store('servers_users');
-          int key;
-          await db.transaction((txn) async {
-            key = await store.add(txn, {
-              "username": results['username'],
-              "servers": [],
+          var finder =
+              Finder(filter: Filter.equals("username", results["username"]));
+          var findRecord = await store.find(db, finder: finder);
+          if (findRecord.isEmpty) {
+            loggedinUser user = loggedinUser();
+            user.username = results['username'];
+
+            int key;
+            await db.transaction((txn) async {
+              key = await store.add(txn, {
+                "username": results['username'],
+                "servers": [],
+                "messages": [],
+              });
             });
-          });
-          print("User ${results['username']} logged in succesfully");
-          
+            print("User ${results['username']} logged in succesfully");
+          } else {
+            print("User ${results["username"]} was already logged in!");
+          }
         } else {
           print("Please enter the correct password");
-          
         }
       }
     } else {
       print("Read docs");
-     
     }
   } catch (e) {
     print(e);
-   
+
     // exit(2);
   }
 }

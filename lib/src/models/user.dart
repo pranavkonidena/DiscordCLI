@@ -1,6 +1,7 @@
 import 'servers.dart';
 import '../cli/joinServer.dart';
 import '../cli/login.dart';
+import '../cli/register.dart';
 
 class User {
   late String username;
@@ -17,9 +18,5 @@ class loggedinUser extends User {
     } else {
       print("U dont have access for that.");
     }
-  }
-
-  joinServer(List<String> arguments, loggedinUser user) {
-    addToDb(arguments);
   }
 }

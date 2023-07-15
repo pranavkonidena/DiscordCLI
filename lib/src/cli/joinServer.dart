@@ -55,3 +55,35 @@ void addToDb(List<String> args) async {
     print("See docs");
   }
 }
+
+dynamic checkLogin(List<String> args) async {
+  var parser = ArgParser();
+  parser.addOption(
+    "server",
+    mandatory: false,
+    abbr: "s",
+  );
+  parser.addOption(
+    "username",
+    abbr: "u",
+    mandatory: true,
+  );
+  parser.addFlag(
+    "join",
+    abbr: "j",
+    defaultsTo: false,
+  );
+  var results = parser.parse(args);
+
+  String dbPath = "src/db/servers_users.db";
+  Database db = await databaseFactoryIo.openDatabase(dbPath);
+  var store = intMapStoreFactory.store('servers_users');
+  int key;
+  var finder = Finder(filter: Filter.equals("username", results["username"]));
+  var findRecord = await store.findFirst(db, finder: finder);
+  if (findRecord == null) {
+    return false;
+  } else {
+    return true;
+  }
+}

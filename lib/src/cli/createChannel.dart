@@ -22,9 +22,7 @@ void createChannel(List<String> arguments) {
 
   var results = parser.parse(arguments);
   if (results["create"] == true) {
-
-  }
-  else{
-    print("Please read the docs!")
+  } else {
+    print("Please read the docs!");
   }
 }
