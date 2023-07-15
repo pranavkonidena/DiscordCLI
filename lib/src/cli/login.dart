@@ -59,7 +59,7 @@ loginUser(List<String> args) async {
           await db.transaction((txn) async {
             key = await store.add(txn, {
               "username": results['username'],
-              "servers" : null,
+              "servers" : [],
             });
           });
           print("User ${results['username']} logged in succesfully");

@@ -30,24 +30,23 @@ void addToDb(List<String> args) async {
     var store = intMapStoreFactory.store('servers_users');
     int key;
     var finder = Finder(filter: Filter.equals("username", results["username"]));
-    var finder_new =
-        Finder(filter: Filter.equals("servers", results["server"]));
     var findRecord = await store.findFirst(db, finder: finder);
-    var serverRecord = await store.findFirst(db, finder: finder_new);
     if (findRecord == null) {
       print("Please login before joining a server");
     } else {
       // findRecord[0].value.entries.last.value returns list of servers of a particular username.
       // findRecord[0].value.entries.last.value.add(results["server"]);
-      if (serverRecord != null) {
+      dynamic map = cloneMap(findRecord.value);
+      if (map["servers"].contains(results["server"])) {
         print(
-            "User ${results["username"]} has already joined the server ${results["server"]}");
+            "User ${results['username']} has already joined the server ${results["server"]}");
       } else {
-        dynamic map = cloneMap(findRecord.value);
         await store.delete(db, finder: finder);
-        map["servers"] = results["server"];
+        List<dynamic> duplicates = [];
+        duplicates = map["servers"];
+        duplicates.add(results["server"]);
+        map["servers"] = duplicates;
         await store.add(db, map);
-        int key;
         print(
             "User ${results["username"]} has joined the server ${results["server"]} successfully.");
       }

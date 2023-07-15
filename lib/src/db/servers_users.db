@@ -1,6 +1,8 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"servers_users","value":{"username":"Pranav","servers":"test"}}
-{"key":1,"deleted":true,"store":"servers_users"}
-{"key":2,"store":"servers_users","value":{"username":"Pranav","servers":"123"}}
-{"key":2,"deleted":true,"store":"servers_users"}
-{"key":3,"store":"servers_users","value":{"username":"Pranav","servers":"1234"}}
+{"key":7,"store":"servers_users","value":{"username":"P","servers":["123","1234","1234"]}}
+{"key":7,"deleted":true,"store":"servers_users"}
+{"key":8,"store":"servers_users","value":{"username":"P","servers":["123"]}}
+{"key":8,"deleted":true,"store":"servers_users"}
+{"key":9,"store":"servers_users","value":{"username":"P","servers":["123","1234"]}}
+{"key":9,"deleted":true,"store":"servers_users"}
+{"key":10,"store":"servers_users","value":{"username":"P","servers":["123","1234","12345"]}}
