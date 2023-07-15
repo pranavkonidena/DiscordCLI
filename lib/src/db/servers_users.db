@@ -2,3 +2,10 @@
 {"key":1,"store":"servers_users","value":{"username":"Test","servers":[],"messages":[]}}
 {"key":1,"deleted":true,"store":"servers_users"}
 {"key":2,"store":"servers_users","value":{"username":"Test","servers":[],"messages":[]}}
+{"key":2,"deleted":true,"store":"servers_users"}
+{"key":3,"store":"servers_users","value":{"username":"Test","servers":["123"],"messages":[]}}
+{"key":3,"deleted":true,"store":"servers_users"}
+{"key":4,"store":"servers_users","value":{"username":"Test","servers":[],"messages":[]}}
+{"key":4,"deleted":true,"store":"servers_users"}
+{"key":5,"store":"servers_users","value":{"username":"Test","servers":[],"messages":[]}}
+{"key":5,"deleted":true,"store":"servers_users"}
