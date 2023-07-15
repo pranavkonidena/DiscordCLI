@@ -20,7 +20,7 @@ void main(List<String> arguments) {
   }
   if (arguments.contains("--join") || arguments.contains("-j")) {
     try {
-      addToDb(arguments);
+     addToDb(arguments);
     } catch (e) {
       // print("You have to be logged in for this feature!");
       print(e);

@@ -50,7 +50,7 @@ loginUser(List<String> args) async {
         var bytes = utf8.encode(results['password']);
         var digest = sha256.convert(bytes);
         if (digest.toString() == hashedPassword) {
-          loggedinUser user = loggedinUser(results["role"]);
+          loggedinUser user = loggedinUser();
           user.username = results['username'];
           String dbPath = "src/db/servers_users.db";
           Database db = await databaseFactoryIo.openDatabase(dbPath);
@@ -59,22 +59,23 @@ loginUser(List<String> args) async {
           await db.transaction((txn) async {
             key = await store.add(txn, {
               "username": results['username'],
-              "servers" : [],
+              "servers": [],
             });
           });
           print("User ${results['username']} logged in succesfully");
           
         } else {
           print("Please enter the correct password");
-          return null;
+          
         }
       }
     } else {
       print("Read docs");
-
+     
     }
   } catch (e) {
     print(e);
+   
     // exit(2);
   }
 }

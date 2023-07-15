@@ -6,3 +6,8 @@
 {"key":9,"store":"servers_users","value":{"username":"P","servers":["123","1234"]}}
 {"key":9,"deleted":true,"store":"servers_users"}
 {"key":10,"store":"servers_users","value":{"username":"P","servers":["123","1234","12345"]}}
+{"key":11,"store":"servers_users","value":{"username":"Test123","servers":[]}}
+{"key":11,"deleted":true,"store":"servers_users"}
+{"key":12,"store":"servers_users","value":{"username":"Test123","servers":["123"]}}
+{"key":12,"deleted":true,"store":"servers_users"}
+{"key":13,"store":"servers_users","value":{"username":"Test123","servers":["123","1234"]}}

@@ -11,10 +11,6 @@ class User {
 
 class loggedinUser extends User {
   late String role = "";
-  loggedinUser(String role_given) {
-    role = role_given;
-  }
-
   sendMessage() {
     if (role == "mod") {
       print("Only logged in Users can call this method.");
