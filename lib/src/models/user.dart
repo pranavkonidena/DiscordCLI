@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'servers.dart';
 import '../cli/joinServer.dart';
 import '../cli/login.dart';
@@ -15,16 +17,23 @@ class User {
   late List<String> channels;
   static List<User> instances = [];
 
-  logInUser(dynamic results) async {
+  dynamic logInUser(dynamic results) async {
     try {
       if (results['login'] == true) {
         String dbPath = "src/db/users.db";
         Database db = await databaseFactoryIo.openDatabase(dbPath);
+        Database loggeddb =
+            await databaseFactoryIo.openDatabase("src/db/servers_users.db");
         var store = intMapStoreFactory.store('users');
+        var storelog = intMapStoreFactory.store("servers_users");
         var finder =
             Finder(filter: Filter.equals("username", results["username"]));
         var findRecord = await store.find(db, finder: finder);
-        if (findRecord.isEmpty) {
+        var finder_new = Finder(filter: Filter.notNull("username"));
+        var finder_new_record = await storelog.find(loggeddb, finder: finder_new);
+        //finder_new_record[0].value["username"]
+        if (finder_new_record.length == 0) {
+            if (findRecord.isEmpty) {
           print("Please register before logging in");
         } else {
           var hashedPassword = findRecord[0].value.entries.last.value;
@@ -40,16 +49,17 @@ class User {
             if (findRecord.isEmpty) {
               loggedinUser user = loggedinUser();
               user.username = results['username'];
-
               int key;
               await db.transaction((txn) async {
                 key = await store.add(txn, {
                   "username": results['username'],
                   "servers": [],
-                  "messages": [],
                 });
               });
               print("User ${results['username']} logged in succesfully");
+              loggedinUser logUser = loggedinUser();
+              logUser.username = results["username"];
+              return logUser;
             } else {
               print("User ${results["username"]} was already logged in!");
             }
@@ -57,6 +67,14 @@ class User {
             print("Please enter the correct password");
           }
         }
+        } else {
+          if (finder_new_record[0].value["username"] == results["username"]) {
+              print("User ${results["username"]} was already logged in!");
+          } else {
+              print("You are logged in with ${finder_new_record[0].value["username"]}. Please log out first");
+          }
+        }
+        
       } else {
         print("Read docs");
       }
@@ -110,32 +128,55 @@ class loggedinUser extends User {
     }
   }
 
-  logout(dynamic results) async{
+  logout(dynamic results) async {
     if (results['logout'] == true) {
-    try {
-      String dbPath = "src/db/users.db";
-      Database db = await databaseFactoryIo.openDatabase(dbPath);
-      Database dbU =
-          await databaseFactoryIo.openDatabase("src/db/servers_users.db");
-      var store = intMapStoreFactory.store('users');
-      var store1 = intMapStoreFactory.store('servers_users');
-      var finder =
-          Finder(filter: Filter.equals("username", results["username"]));
-      var findRecord = await store.find(db, finder: finder);
-      if (findRecord.isEmpty) {
-        print("User not found. Please register before logging out.");
-      } else {
-        User user = User();
-        user.username = results['username'];
-        var record = await store1.find(dbU, finder: finder);
-        await store1.delete(dbU, finder: finder);
-        print("User ${user.username} logged out succesfully.");
+      try {
+        String dbPath = "src/db/users.db";
+        Database db = await databaseFactoryIo.openDatabase(dbPath);
+        Database dbU =
+            await databaseFactoryIo.openDatabase("src/db/servers_users.db");
+        var store = intMapStoreFactory.store('users');
+        var store1 = intMapStoreFactory.store('servers_users');
+        var finder =
+            Finder(filter: Filter.equals("username", results["username"]));
+        var findRecord = await store.find(db, finder: finder);
+        if (findRecord.isEmpty) {
+          print("User not found. Please register before logging out.");
+        } else {
+          User user = User();
+          user.username = results['username'];
+          var record = await store1.find(dbU, finder: finder);
+          await store1.delete(dbU, finder: finder);
+          print("User ${user.username} logged out succesfully.");
+        }
+      } catch (e) {
+        print(e);
       }
-    } catch (e) {
-      print(e);
+    } else {
+      print("Read docs");
     }
-  } else {
-    print("Read docs");
   }
+
+  sendDM(dynamic results) async {
+    var recipient = results["recipient"];
+    String dbPath = "src/db/users.db";
+    Database db = await databaseFactoryIo.openDatabase(dbPath);
+    Database dbU =
+        await databaseFactoryIo.openDatabase("src/db/servers_users.db");
+    var store = intMapStoreFactory.store('users');
+    var finder = Finder(filter: Filter.equals("username", recipient));
+    var findRecord = await store.findFirst(db, finder: finder);
+    if (findRecord == null) {
+      print("The user ${results["recipient"]} is not registered");
+    } else {
+      dynamic map = cloneMap(findRecord.value);
+      await store.delete(db, finder: finder);
+      List<dynamic> duplicates = [];
+      duplicates = map["messages"];
+      duplicates.add(results["message"]);
+      map["messages"] = duplicates;
+      await store.add(db, map);
+      print("Message sent succesfully");
+    }
   }
 }

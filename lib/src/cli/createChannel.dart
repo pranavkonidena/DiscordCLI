@@ -14,6 +14,11 @@ void createChannel(List<String> arguments) {
     "server",
     mandatory: true,
   );
+  parser.addOption(
+    "category",
+    mandatory: false,
+    defaultsTo: null,
+  );
   parser.addFlag(
     "create",
     abbr: "c",

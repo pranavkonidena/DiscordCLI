@@ -1,2 +1,3 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"users","value":{"username":"Test","password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
+{"key":1,"store":"users","value":{"username":"1","messages":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":2,"store":"users","value":{"username":"2","messages":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}

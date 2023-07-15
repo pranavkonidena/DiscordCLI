@@ -8,6 +8,7 @@ import './src/cli/joinServer.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 import 'package:sembast/sembast_memory.dart';
+import './src/cli/DM.dart';
 
 void main(List<String> arguments) {
   if (arguments.contains("-l") || arguments.contains("--login")) {
@@ -25,6 +26,8 @@ void main(List<String> arguments) {
     } catch (e) {
       print(e);
     }
-
+  }
+  if (arguments.contains("--dm")) {
+    dm(arguments);
   }
 }

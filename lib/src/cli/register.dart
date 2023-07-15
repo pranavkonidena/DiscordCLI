@@ -36,7 +36,7 @@ void registerUser(List<String> args) async {
       if (findRecord.isEmpty) {
         await db.transaction((txn) async {
           key = await store.add(txn,
-              {"username": results['username'], "password": digest.toString()});
+              {"username": results['username'], "messages" : [] , "password": digest.toString()});
         });
         print("User ${results["username"]} registered succesfully");
         User user = User();
