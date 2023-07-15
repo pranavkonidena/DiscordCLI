@@ -1,8 +1,3 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"users","value":{"username":"Test","messages":[],"password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
-{"key":2,"store":"users","value":{"username":"Test","messages":["Hi"],"password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
-{"key":3,"store":"users","value":{"username":"Pranav","messages":[],"password":"b05a5e6bd63b79bb7e8d024557827089b067e9f00535a23e119393f57c410297"}}
-{"key":3,"deleted":true,"store":"users"}
-{"key":4,"store":"users","value":{"username":"Pranav","messages":["Hi"],"password":"b05a5e6bd63b79bb7e8d024557827089b067e9f00535a23e119393f57c410297"}}
-{"key":4,"deleted":true,"store":"users"}
-{"key":5,"store":"users","value":{"username":"Pranav","messages":["Hi","Hsdasds"],"password":"b05a5e6bd63b79bb7e8d024557827089b067e9f00535a23e119393f57c410297"}}
+{"key":1,"store":"users","value":{"username":"1","messages":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":2,"store":"users","value":{"username":"2","messages":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}

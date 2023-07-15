@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'servers.dart';
 import '../cli/joinServer.dart';
 import '../cli/login.dart';
@@ -20,11 +22,18 @@ class User {
       if (results['login'] == true) {
         String dbPath = "src/db/users.db";
         Database db = await databaseFactoryIo.openDatabase(dbPath);
+        Database loggeddb =
+            await databaseFactoryIo.openDatabase("src/db/servers_users.db");
         var store = intMapStoreFactory.store('users');
+        var storelog = intMapStoreFactory.store("servers_users");
         var finder =
             Finder(filter: Filter.equals("username", results["username"]));
         var findRecord = await store.find(db, finder: finder);
-        if (findRecord.isEmpty) {
+        var finder_new = Finder(filter: Filter.notNull("username"));
+        var finder_new_record = await storelog.find(loggeddb, finder: finder_new);
+        //finder_new_record[0].value["username"]
+        if (finder_new_record.length == 0) {
+            if (findRecord.isEmpty) {
           print("Please register before logging in");
         } else {
           var hashedPassword = findRecord[0].value.entries.last.value;
@@ -40,7 +49,6 @@ class User {
             if (findRecord.isEmpty) {
               loggedinUser user = loggedinUser();
               user.username = results['username'];
-
               int key;
               await db.transaction((txn) async {
                 key = await store.add(txn, {
@@ -59,6 +67,14 @@ class User {
             print("Please enter the correct password");
           }
         }
+        } else {
+          if (finder_new_record[0].value["username"] == results["username"]) {
+              print("User ${results["username"]} was already logged in!");
+          } else {
+              print("You are logged in with ${finder_new_record[0].value["username"]}. Please log out first");
+          }
+        }
+        
       } else {
         print("Read docs");
       }
