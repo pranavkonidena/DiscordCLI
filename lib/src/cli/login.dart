@@ -36,6 +36,7 @@ loginUser(List<String> args) async {
   );
   var results = parser.parse(args);
   User user = User();
+  user.username = results["username"];
   user.logInUser(results);
 }
 

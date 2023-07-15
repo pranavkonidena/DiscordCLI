@@ -1,4 +1,5 @@
 import 'package:args/args.dart';
+import 'package:discord_cli/src/models/user.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
@@ -13,10 +14,15 @@ void dm(List<String> arguments) {
     "recipient",
     mandatory: true,
   );
+  parser.addOption(
+    "message",
+    abbr: "m",
+    mandatory: true,
+  );
   var results = parser.parse(arguments);
   if (results["dm"] == true) {
-    var recipient = results["username"];
-    
+    loggedinUser user = loggedinUser();
+    user.sendDM(results);
   } else {
     print("Please read the docs!");
   }
