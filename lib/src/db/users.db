@@ -1,15 +1,11 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"users","value":{"username":"Pranav","messages":[],"password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
-{"key":2,"store":"users","value":{"username":"Aryan","messages":[],"password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
-{"key":2,"deleted":true,"store":"users"}
-{"key":3,"store":"users","value":{"username":"Aryan","messages":[{"sender":"Pranav","message":"HI from pranav"}],"password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
+{"key":1,"store":"users","value":{"username":"Pranav","messages":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":2,"store":"users","value":{"username":"Sravan","messages":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
 {"key":1,"deleted":true,"store":"users"}
-{"key":4,"store":"users","value":{"username":"Pranav","messages":[{"sender":"Aryan","message":"HI from pranav"}],"password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
-{"key":5,"store":"users","value":{"username":"User1","messages":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
-{"key":6,"store":"users","value":{"username":"Prana","messages":[],"password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
+{"key":3,"store":"users","value":{"username":"Pranav","messages":[{"sender":"Sravan","message":"Hi ra"}],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":3,"deleted":true,"store":"users"}
+{"key":4,"store":"users","value":{"username":"Pranav","messages":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
 {"key":4,"deleted":true,"store":"users"}
-{"key":7,"store":"users","value":{"username":"Pranav","messages":[{"sender":"Prana","message":"Hi from Prana"},{"sender":"Aryan","message":"HI from pranav"}],"password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
-{"key":7,"deleted":true,"store":"users"}
-{"key":8,"store":"users","value":{"username":"Pranav","messages":[{"sender":"Pranav","message":"Paisa hai toh"},{"sender":"Prana","message":"Hi from Prana"},{"sender":"Aryan","message":"HI from pranav"}],"password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
-{"key":6,"deleted":true,"store":"users"}
-{"key":9,"store":"users","value":{"username":"Prana","messages":[{"sender":"Pranav","message":"Paisa hai toh"}],"password":"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}}
+{"key":5,"store":"users","value":{"username":"Pranav","messages":[{"sender":"Sravan","message":"Hi againra"}],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":5,"deleted":true,"store":"users"}
+{"key":6,"store":"users","value":{"username":"Pranav","messages":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}

@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:discord_cli/src/cli/DM.dart';
-
 import 'servers.dart';
 import '../cli/joinServer.dart';
 import '../cli/login.dart';
@@ -202,18 +200,26 @@ class loggedinUser extends User {
     Database db = await databaseFactoryIo.openDatabase(dbPath);
     var store = intMapStoreFactory.store("servers_users");
     var finder = Finder(filter: Filter.notNull("username"));
-    var findRecord = await store.find(db, finder: finder);
-    if (findRecord.isNotEmpty) {
-      String dbPathMsg = "src/db/users.db";
-      Database db_msg = await databaseFactoryIo.openDatabase(dbPathMsg);
-      var store_msg = intMapStoreFactory.store("users");
-      var finder_msg = Finder(
-          filter: Filter.equals(
-              "username", findRecord[0].value["username"].toString()));
-      var msg_record = await store_msg.find(db_msg, finder: finder_msg);
-      var list = msg_record[0].value["messages"] as List;
-      print("You have a new message from ${(list[0] as Map)["sender"]}");
-      print("The message is : ${(list[0] as Map)["message"]}");
+    try {
+      var findRecord = await store.find(db, finder: finder);
+      if (findRecord.length != 0) {
+        String dbPathMsg = "src/db/users.db";
+        Database db_msg = await databaseFactoryIo.openDatabase(dbPathMsg);
+        var store_msg = intMapStoreFactory.store("users");
+        var finder_msg = Finder(
+            filter: Filter.equals(
+                "username", findRecord[0].value["username"].toString()));
+        var msg_record = await store_msg.find(db_msg, finder: finder_msg);
+        var seen_msg = await store_msg.findFirst(db_msg, finder: finder_msg);
+        dynamic map = cloneMap(seen_msg!.value);
+        map["messages"] = [];
+        var list = msg_record[0].value["messages"] as List;
+        print("You have a new message from ${(list[0] as Map)["sender"]}");
+        print("The message is : ${(list[0] as Map)["message"]}");
+        await store_msg.delete(db_msg, finder: finder_msg);
+        await store_msg.add(db_msg, map);
+      }
+    } catch (e) {
     }
   }
 }

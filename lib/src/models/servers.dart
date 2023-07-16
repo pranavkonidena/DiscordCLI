@@ -5,6 +5,7 @@ import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:sembast/utils/value_utils.dart';
+import 'package:collection/collection.dart';
 
 class Server {
   List<String> serverUsers = [];
@@ -18,12 +19,13 @@ class Channel extends Server {
   late String channelCategory;
 
   createChannel(dynamic results) async {
+    Function eq = const ListEquality().equals;
     String dbPath = "src/db/servers_users.db";
     Database db = await databaseFactoryIo.openDatabase(dbPath);
     var store = intMapStoreFactory.store('servers_users');
     var finder = Finder(filter: Filter.notNull("username")); // For logged in
     var finder_server =
-        Finder(filter: Filter.matches("servers", results["server"]));
+        Finder(filter: Filter.matches("servers", (results["server"] as List).toString()));
     var findRecord_users = await store.find(db, finder: finder); // For log in
     var findRecord_servers = await store.find(db, finder: finder_server);
     if (findRecord_users.isEmpty) {
