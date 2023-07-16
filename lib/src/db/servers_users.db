@@ -1,4 +1,2 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"servers_users","value":{"username":"Pranav","servers":[]}}
-{"key":1,"deleted":true,"store":"servers_users"}
-{"key":2,"store":"servers_users","value":{"username":"Aryan","servers":[]}}
+{"key":1,"store":"servers_users","value":{"username":"Prana","servers":[]}}

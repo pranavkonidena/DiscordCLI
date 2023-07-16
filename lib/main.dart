@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:discord_cli/src/cli/createChannel.dart';
 import 'package:discord_cli/src/models/servers.dart';
 import './src/cli/register.dart';
 import './src/cli/login.dart';
@@ -30,4 +31,8 @@ void main(List<String> arguments) {
   if (arguments.contains("--dm")) {
     dm(arguments);
   }
+  if (arguments.contains("--channel")) {
+    createChannel(arguments);
+  }
+  
 }

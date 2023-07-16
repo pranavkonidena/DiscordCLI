@@ -1,3 +1,6 @@
+
+import 'dart:math';
+
 import 'package:args/args.dart';
 import 'package:discord_cli/src/models/user.dart';
 import 'package:sembast/sembast.dart';
@@ -26,4 +29,9 @@ void dm(List<String> arguments) {
   } else {
     print("Please read the docs!");
   }
+}
+
+void readDM() {
+  loggedinUser user = loggedinUser();
+  user.readDM();
 }

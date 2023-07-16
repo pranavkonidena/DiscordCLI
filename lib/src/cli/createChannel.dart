@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import '../models/servers.dart';
 import '../models/user.dart';
 import 'package:args/args.dart';
@@ -17,7 +15,7 @@ void createChannel(List<String> arguments) {
   parser.addOption(
     "category",
     mandatory: false,
-    defaultsTo: null,
+    defaultsTo: "text",
   );
   parser.addFlag(
     "create",
@@ -27,6 +25,8 @@ void createChannel(List<String> arguments) {
 
   var results = parser.parse(arguments);
   if (results["create"] == true) {
+    Channel channel = Channel();
+    channel.createChannel(results);
   } else {
     print("Please read the docs!");
   }
