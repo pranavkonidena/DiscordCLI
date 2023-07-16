@@ -144,14 +144,19 @@ class loggedinUser extends User {
         var finder =
             Finder(filter: Filter.equals("username", results["username"]));
         var findRecord = await store.find(db, finder: finder);
-        if (findRecord.isEmpty) {
-          print("User not found. Please register before logging out.");
+        var findRecordNew = await store1.find(dbU, finder: finder);
+        if (findRecordNew.isNotEmpty) {
+          if (findRecord.isEmpty) {
+            print("User not found. Please register before logging out.");
+          } else {
+            User user = User();
+            user.username = results['username'];
+            var record = await store1.find(dbU, finder: finder);
+            await store1.delete(dbU, finder: finder);
+            print("User ${user.username} logged out succesfully.");
+          }
         } else {
-          User user = User();
-          user.username = results['username'];
-          var record = await store1.find(dbU, finder: finder);
-          await store1.delete(dbU, finder: finder);
-          print("User ${user.username} logged out succesfully.");
+          print("Can't logout when no user is logged in.");
         }
       } catch (e) {
         print(e);
