@@ -55,6 +55,7 @@ class User {
                   key = await store.add(txn, {
                     "username": results['username'],
                     "servers": [],
+                    "channels":[],
                   });
                 });
                 print("User ${results['username']} logged in succesfully");
@@ -99,9 +100,13 @@ class loggedinUser extends User {
   joinServer(dynamic results) async {
     if (results['join'] == true) {
       String dbPath = "src/db/servers_users.db";
+      String serverdbPath = "src/db/servers_channels.db";
       Database db = await databaseFactoryIo.openDatabase(dbPath);
       var store = intMapStoreFactory.store('servers_users');
+      var store_servers = intMapStoreFactory.store("servers_channels");
+      Database db_servers = await databaseFactoryIo.openDatabase(serverdbPath);
       int key;
+      int key_servers;
       var finder =
           Finder(filter: Filter.equals("username", results["username"]));
       var findRecord = await store.findFirst(db, finder: finder);
@@ -121,6 +126,13 @@ class loggedinUser extends User {
           duplicates.add(results["server"]);
           map["servers"] = duplicates;
           await store.add(db, map);
+          int key;
+          await db_servers.transaction((txn) async {
+            key = await store.add(txn, {
+              "servers": map["servers"],
+              "channels":[],
+            });
+          });
           print(
               "User ${results["username"]} has joined the server ${results["server"]} successfully.");
         }
@@ -219,7 +231,6 @@ class loggedinUser extends User {
         await store_msg.delete(db_msg, finder: finder_msg);
         await store_msg.add(db_msg, map);
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 }

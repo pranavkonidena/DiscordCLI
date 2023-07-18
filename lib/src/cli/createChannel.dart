@@ -22,6 +22,11 @@ void createChannel(List<String> arguments) {
     abbr: "c",
     defaultsTo: false,
   );
+  parser.addOption(
+    "username",
+    abbr: "u",
+    mandatory: true,
+  );
 
   var results = parser.parse(arguments);
   if (results["create"] == true) {
