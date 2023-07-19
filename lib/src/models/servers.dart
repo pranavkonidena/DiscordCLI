@@ -37,6 +37,7 @@ class Server {
         "categories_channels": [],
       });
     });
+    print("Server created succesfully");
   }
 }
 
@@ -52,22 +53,20 @@ class Category {
 
     if (findRecord == null) {
       print("Server doesn't exist");
-    }
-    else{
-      print(findRecord.value["categories_channels"]);
+    } else {
       dynamic map = cloneMap(findRecord.value);
       await store.delete(db, finder: finder);
-      List <dynamic> duplicates = map["categories_channels"];
+      List<dynamic> duplicates = map["categories_channels"];
       var entry = {
         "categories": {
-        results["category"]: [],
-      },
-    };
+          results["category"]: [],
+        },
+      };
       duplicates.add(entry);
       map["categories_channels"] = duplicates;
       await store.add(db, map);
+      print("Category added succesfully");
     }
-    
   }
 }
 

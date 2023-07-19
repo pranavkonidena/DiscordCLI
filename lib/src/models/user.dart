@@ -115,7 +115,15 @@ class loggedinUser extends User {
       } else {
         // findRecord[0].value.entries.last.value returns list of servers of a particular username.
         // findRecord[0].value.entries.last.value.add(results["server"]);
-        dynamic map = cloneMap(findRecord.value);
+        var finder_server =
+            Finder(filter: Filter.equals("server", results["server"]));
+        var findRecord_server =
+            await store_servers.find(db_servers, finder: finder_server);
+        if (findRecord_server.isEmpty) {
+          print("Please enter a valid server.");
+        }
+        else{
+            dynamic map = cloneMap(findRecord.value);
         if (map["servers"].contains(results["server"])) {
           print(
               "User ${results['username']} has already joined the server ${results["server"]}");
@@ -127,16 +135,12 @@ class loggedinUser extends User {
           map["servers"] = duplicates;
           await store.add(db, map);
           int key;
-          await db_servers.transaction((txn) async {
-            key = await store.add(txn, {
-              "servers": map["servers"],
-              "channels": [],
-              "cMessages": [],
-            });
-          });
+        
           print(
               "User ${results["username"]} has joined the server ${results["server"]} successfully.");
         }
+        }
+        
       }
     } else {
       print("See docs");
@@ -271,6 +275,4 @@ class loggedinUser extends User {
   }
 }
 
-class modUser extends loggedinUser {
-  
-}
+class modUser extends loggedinUser {}
