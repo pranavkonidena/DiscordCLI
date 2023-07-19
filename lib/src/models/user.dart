@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cryptography/cryptography.dart';
 import 'package:discord_cli/src/cli/DM.dart';
 import 'servers.dart';
 import '../cli/joinServer.dart';
@@ -16,8 +17,8 @@ class User {
   late List<String> servers;
   late List<String> channels;
   static List<User> instances = [];
-
-  dynamic logInUser(dynamic results) async {
+  String role = "member";
+  void logInUser(dynamic results) async {
     try {
       if (results['login'] == true) {
         String dbPath = "src/db/users.db";
@@ -55,14 +56,13 @@ class User {
                   key = await store.add(txn, {
                     "username": results['username'],
                     "servers": [],
-                    "channels":[],
+                    "channels": [],
                   });
                 });
                 print("User ${results['username']} logged in succesfully");
                 readDM();
                 loggedinUser logUser = loggedinUser();
                 logUser.username = results["username"];
-                return logUser;
               } else {
                 print("User ${results["username"]} was already logged in!");
               }
@@ -130,7 +130,8 @@ class loggedinUser extends User {
           await db_servers.transaction((txn) async {
             key = await store.add(txn, {
               "servers": map["servers"],
-              "channels":[],
+              "channels": [],
+              "cMessages": [],
             });
           });
           print(
@@ -186,7 +187,6 @@ class loggedinUser extends User {
     var store1 = intMapStoreFactory.store("servers_users");
     var finder_new = Finder(filter: Filter.notNull("username"));
     var finder_new_record = await store1.find(dbU, finder: finder_new);
-
     var finder = Finder(filter: Filter.equals("username", recipient));
     var findRecord = await store.findFirst(db, finder: finder);
     if (findRecord == null) {
@@ -233,4 +233,44 @@ class loggedinUser extends User {
       }
     } catch (e) {}
   }
+
+  void channelDM(dynamic results) async {
+    var channel = results["channel"];
+    var dbPath = "src/db/servers_users.db";
+    Database db = await databaseFactoryIo.openDatabase(dbPath);
+    var store = intMapStoreFactory.store("servers_users");
+    var finder = Finder(filter: Filter.notNull("username"));
+    var userRecord = await store.find(db, finder: finder);
+    List<dynamic> users = [];
+    for (int i = 0; i < userRecord.length; i++) {
+      List<dynamic> temp = userRecord[i].value["channels"] as List;
+      if (temp.contains(results["channel"])) {
+        users.add(userRecord[i].value["username"]);
+      }
+    }
+    addMsg(users, results["message"]);
+  }
+
+  void addMsg(List<dynamic> users, var message) async {
+    String dbPath = "src/db/users.db";
+    Database db = await databaseFactoryIo.openDatabase(dbPath);
+    var store = intMapStoreFactory.store("users");
+    for (int i = 0; i < users.length; i++) {
+      var user = users[i];
+      var finder = Finder(filter: Filter.equals("username", user));
+      var userRecord = await store.findFirst(db, finder: finder);
+      dynamic map = cloneMap(userRecord!.value);
+      List<dynamic> duplicates = [];
+      duplicates = map["messages"];
+      duplicates.add(message);
+      map["messages"] = duplicates;
+      await store.delete(db, finder: finder);
+      await store.add(db, map);
+    }
+    print("Message sent in channel succesfully.");
+  }
+}
+
+class modUser extends loggedinUser {
+  
 }
