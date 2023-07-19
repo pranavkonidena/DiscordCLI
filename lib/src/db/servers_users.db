@@ -1,4 +1,4 @@
 {"version":1,"sembast":1}
-{"key":2,"store":"servers_users","value":{"username":"Sravan","servers":["12"],"channels":[]}}
-{"key":2,"deleted":true,"store":"servers_users"}
-{"key":3,"store":"servers_users","value":{"username":"Sravan","servers":["12"],"channels":["123"]}}
+{"key":1,"store":"servers_users","value":{"username":"Avinash","servers":[],"channels":[]}}
+{"key":1,"deleted":true,"store":"servers_users"}
+{"key":2,"store":"servers_users","value":{"username":"Avinash","servers":["IMG"],"channels":[]}}

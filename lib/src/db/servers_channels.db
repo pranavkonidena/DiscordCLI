@@ -1,2 +1,4 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"servers_users","value":{"servers":["12"],"channels":[]}}
+{"key":1,"store":"servers_channels","value":{"server":"IMG","categories_channels":[]}}
+{"key":1,"deleted":true,"store":"servers_channels"}
+{"key":2,"store":"servers_channels","value":{"server":"IMG","categories_channels":[{"categories":{"1Y":[]}}]}}
