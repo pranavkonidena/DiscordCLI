@@ -1,3 +1,5 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"users","value":{"username":"Pranav","messages":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
-{"key":2,"store":"users","value":{"username":"Avinash","messages":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":1,"store":"users","value":{"username":"Pranav","messages":[],"channels":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":2,"store":"users","value":{"username":"Sravan","messages":[],"channels":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":2,"deleted":true,"store":"users"}
+{"key":3,"store":"users","value":{"username":"Sravan","messages":[{"sender":"Pranav","message":"Hi"}],"channels":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
