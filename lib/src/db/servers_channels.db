@@ -8,3 +8,5 @@
 {"key":4,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":["restricted","test"]}}]}}
 {"key":4,"deleted":true,"store":"servers_channels"}
 {"key":5,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":["restricted","restricted","test"]}}]}}
+{"key":5,"deleted":true,"store":"servers_channels"}
+{"key":6,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":["restricted","restricted","test"]}},{"categories":{"2":[]}}]}}

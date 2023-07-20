@@ -13,6 +13,7 @@ import 'package:sembast/sembast_memory.dart';
 import 'src/cli/DM.dart';
 import 'src/cli/channelDM.dart';
 import 'src/cli/createCategory.dart';
+import 'src/cli/printCategory.dart';
 
 void main(List<String> arguments) {
   if (arguments.contains("-l") || arguments.contains("--login")) {
@@ -34,10 +35,13 @@ void main(List<String> arguments) {
     // print("Hi");
   } else if (arguments.contains("--channel")) {
     createChannel(arguments);
-  } else if (arguments.contains("--server") && !arguments.contains("--category")) {
+  } else if (arguments.contains("--server") &&
+      !arguments.contains("--category")) {
     createServer(arguments);
-  } else if (arguments.contains("--category")) {
+  } else if (arguments.contains("--category") && !arguments.contains("--print")) {
     createCat(arguments);
+  } else if (arguments.contains("--print") && arguments.contains("--category")) {
+    printCategory(arguments);
   }
 }
 
