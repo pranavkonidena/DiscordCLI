@@ -1,1 +1,6 @@
 {"version":1,"sembast":1}
+{"key":1,"store":"servers_channels","value":{"server":"1234\n\n","categories_channels":[]}}
+{"key":4,"store":"servers_channels","value":{"server":"1234","categories_channels":[{"categories":{"1":[]}},{"categories":{"2":[]}}]}}
+{"key":7,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":["test"]}}]}}
+{"key":7,"deleted":true,"store":"servers_channels"}
+{"key":8,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":["test","test"]}}]}}

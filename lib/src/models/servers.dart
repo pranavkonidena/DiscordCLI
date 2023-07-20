@@ -91,24 +91,26 @@ class Channel {
     var findRecord = await store.findFirst(db, finder: finder);
     try {
       var map = cloneMap(findRecord!.value);
-      await store.delete(db , finder: finder);
+      
       var list_map = map["categories_channels"] as List;
       var itemToChange = list_map[list_map.length - 1];
       try {
         (itemToChange["categories"][results["category"]] as List).insert(0,results["channel"]);
+        await store.delete(db , finder: finder);
         map["categories_channels"] = list_map;
         await store.add(db, map);
         try {
+          print("Inside try block");
           Database db_users = await databaseFactoryIo.openDatabase("src/db/users.db");
           var finder_users = Finder(filter: Filter.equals("username" , results["username"]));
           var store_users = intMapStoreFactory.store("users");
           var userRecord = await store_users.findFirst(db_users , finder: finder_users);
           var map = cloneMap(userRecord!.value);
-          await store_users.delete(db_users , finder: finder_users);
           List  duplicates = [];
           duplicates = map["channels"] as List;
           duplicates.add(results["channel"]);
           map["channels"] = duplicates;
+          await store_users.delete(db_users , finder: finder_users);
           await store_users.add(db_users, map);
           print("Channel joined succesfully!");
         } catch (e) {

@@ -199,7 +199,7 @@ class loggedinUser extends User {
       print("The user ${results["recipient"]} is not registered");
     } else {
       dynamic map = cloneMap(findRecord.value);
-      await store.delete(db, finder: finder);
+      
       var entry = {
         "sender": finder_new_record[0].value["username"],
         "message": results["message"],
@@ -208,7 +208,13 @@ class loggedinUser extends User {
       duplicates = map["messages"];
       duplicates.insert(0, entry);
       map["messages"] = duplicates;
-      await store.add(db, map);
+      try {
+        await store.delete(db, finder: finder);
+        await store.add(db, map);
+      } catch (e) {
+        await store.add(db, map);
+      }
+     
       print("Message sent succesfully");
     }
   }
@@ -234,8 +240,14 @@ class loggedinUser extends User {
         var list = msg_record[0].value["messages"] as List;
         print("You have a new message from ${(list[0] as Map)["sender"]}");
         print("The message is : ${(list[0] as Map)["message"]}");
-        await store_msg.delete(db_msg, finder: finder_msg);
-        await store_msg.add(db_msg, map);
+        try {
+          await store_msg.delete(db_msg, finder: finder_msg);
+          await store_msg.add(db_msg, map);
+        } catch (e) {
+          await store_msg.add(db_msg, map);
+        }
+        
+        
       }
     } catch (e) {}
   }
@@ -278,8 +290,13 @@ class loggedinUser extends User {
       };
       duplicates.add(entry);
       map["messages"] = duplicates;
-      await store.delete(db, finder: finder);
-      await store.add(db, map);
+      try {
+        await store.delete(db, finder: finder);
+        await store.add(db, map);
+      } catch (e) {
+        await store.add(db, map);
+      }
+      
     }
     print("Message sent in channel succesfully.");
   }
