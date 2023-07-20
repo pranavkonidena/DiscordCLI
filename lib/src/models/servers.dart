@@ -57,7 +57,6 @@ class Category {
       print("Server doesn't exist");
     } else {
       dynamic map = cloneMap(findRecord.value);
-      await store.delete(db, finder: finder);
       List<dynamic> duplicates = map["categories_channels"];
       var entry = {
         "categories": {
@@ -66,7 +65,13 @@ class Category {
       };
       duplicates.add(entry);
       map["categories_channels"] = duplicates;
-      await store.add(db, map);
+      
+      try {
+        await store.delete(db, finder: finder);
+        await store.add(db, map);
+      } catch (e) {
+        await store.add(db, map);
+      }
       print("Category added succesfully");
     }
   }
@@ -86,30 +91,31 @@ class Channel {
     var findRecord = await store.findFirst(db, finder: finder);
     try {
       var map = cloneMap(findRecord!.value);
-      await store.delete(db , finder: finder);
+      
       var list_map = map["categories_channels"] as List;
       var itemToChange = list_map[list_map.length - 1];
       try {
         (itemToChange["categories"][results["category"]] as List).insert(0,results["channel"]);
+        await store.delete(db , finder: finder);
         map["categories_channels"] = list_map;
         await store.add(db, map);
         try {
-          Database db_users = await databaseFactoryIo.openDatabase("src/db/servers_users.db");
+          print("Inside try block");
+          Database db_users = await databaseFactoryIo.openDatabase("src/db/users.db");
           var finder_users = Finder(filter: Filter.equals("username" , results["username"]));
-          var store_users = intMapStoreFactory.store("servers_users");
+          var store_users = intMapStoreFactory.store("users");
           var userRecord = await store_users.findFirst(db_users , finder: finder_users);
-          print(userRecord!.value["channels"]);
-          var map = cloneMap(userRecord.value);
-          await store_users.delete(db_users , finder: finder_users);
+          var map = cloneMap(userRecord!.value);
           List  duplicates = [];
           duplicates = map["channels"] as List;
           duplicates.add(results["channel"]);
           map["channels"] = duplicates;
+          await store_users.delete(db_users , finder: finder_users);
           await store_users.add(db_users, map);
+          print("Channel joined succesfully!");
         } catch (e) {
           print("Invalid user");
         }
-        print("Channel joined succesfully!");
       } catch (e) {
         print("That category doesn't exist.");
       }
@@ -118,3 +124,5 @@ class Channel {
     }
   }
 }
+
+// Bugs found in create a server as exceptions are not handled properly.

@@ -15,7 +15,7 @@ void createChannel(List<String> arguments) {
   parser.addOption(
     "category",
     mandatory: false,
-    defaultsTo: "text",
+    defaultsTo: "null",
   );
   parser.addFlag(
     "create",

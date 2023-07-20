@@ -121,26 +121,28 @@ class loggedinUser extends User {
             await store_servers.find(db_servers, finder: finder_server);
         if (findRecord_server.isEmpty) {
           print("Please enter a valid server.");
-        }
-        else{
-            dynamic map = cloneMap(findRecord.value);
-        if (map["servers"].contains(results["server"])) {
-          print(
-              "User ${results['username']} has already joined the server ${results["server"]}");
         } else {
-          await store.delete(db, finder: finder);
-          List<dynamic> duplicates = [];
-          duplicates = map["servers"];
-          duplicates.add(results["server"]);
-          map["servers"] = duplicates;
-          await store.add(db, map);
-          int key;
-        
-          print(
-              "User ${results["username"]} has joined the server ${results["server"]} successfully.");
+          dynamic map = cloneMap(findRecord.value);
+          if (map["servers"].contains(results["server"])) {
+            print(
+                "User ${results['username']} has already joined the server ${results["server"]}");
+          } else {
+            List<dynamic> duplicates = [];
+            duplicates = map["servers"];
+            duplicates.add(results["server"]);
+            map["servers"] = duplicates;
+            try {
+              await store.delete(db, finder: finder);
+              await store.add(db, map);
+            } catch (e) {
+              await store.add(db, map);
+            }
+
+            int key;
+            print(
+                "User ${results["username"]} has joined the server ${results["server"]} successfully.");
+          }
         }
-        }
-        
       }
     } else {
       print("See docs");
@@ -197,7 +199,7 @@ class loggedinUser extends User {
       print("The user ${results["recipient"]} is not registered");
     } else {
       dynamic map = cloneMap(findRecord.value);
-      await store.delete(db, finder: finder);
+      
       var entry = {
         "sender": finder_new_record[0].value["username"],
         "message": results["message"],
@@ -206,7 +208,13 @@ class loggedinUser extends User {
       duplicates = map["messages"];
       duplicates.insert(0, entry);
       map["messages"] = duplicates;
-      await store.add(db, map);
+      try {
+        await store.delete(db, finder: finder);
+        await store.add(db, map);
+      } catch (e) {
+        await store.add(db, map);
+      }
+     
       print("Message sent succesfully");
     }
   }
@@ -232,17 +240,23 @@ class loggedinUser extends User {
         var list = msg_record[0].value["messages"] as List;
         print("You have a new message from ${(list[0] as Map)["sender"]}");
         print("The message is : ${(list[0] as Map)["message"]}");
-        await store_msg.delete(db_msg, finder: finder_msg);
-        await store_msg.add(db_msg, map);
+        try {
+          await store_msg.delete(db_msg, finder: finder_msg);
+          await store_msg.add(db_msg, map);
+        } catch (e) {
+          await store_msg.add(db_msg, map);
+        }
+        
+        
       }
     } catch (e) {}
   }
 
   void channelDM(dynamic results) async {
     var channel = results["channel"];
-    var dbPath = "src/db/servers_users.db";
+    var dbPath = "src/db/users.db";
     Database db = await databaseFactoryIo.openDatabase(dbPath);
-    var store = intMapStoreFactory.store("servers_users");
+    var store = intMapStoreFactory.store("users");
     var finder = Finder(filter: Filter.notNull("username"));
     var userRecord = await store.find(db, finder: finder);
     List<dynamic> users = [];
@@ -252,10 +266,14 @@ class loggedinUser extends User {
         users.add(userRecord[i].value["username"]);
       }
     }
-    addMsg(users, results["message"]);
+    if (users.length == 0) {
+      print("Invalid channel");
+    } else {
+      addMsg(users, results["message"], results["channel"]);
+    }
   }
 
-  void addMsg(List<dynamic> users, var message) async {
+  void addMsg(List<dynamic> users, var message, var channelName) async {
     String dbPath = "src/db/users.db";
     Database db = await databaseFactoryIo.openDatabase(dbPath);
     var store = intMapStoreFactory.store("users");
@@ -266,10 +284,19 @@ class loggedinUser extends User {
       dynamic map = cloneMap(userRecord!.value);
       List<dynamic> duplicates = [];
       duplicates = map["messages"];
-      duplicates.add(message);
+      var entry = {
+        "sender": "Channel ${channelName}",
+        "message": message,
+      };
+      duplicates.add(entry);
       map["messages"] = duplicates;
-      await store.delete(db, finder: finder);
-      await store.add(db, map);
+      try {
+        await store.delete(db, finder: finder);
+        await store.add(db, map);
+      } catch (e) {
+        await store.add(db, map);
+      }
+      
     }
     print("Message sent in channel succesfully.");
   }
