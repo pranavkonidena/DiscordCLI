@@ -29,11 +29,6 @@ loginUser(List<String> args) async {
     mandatory: true,
   );
 
-  parser.addOption(
-    "role",
-    mandatory: false,
-    defaultsTo: "member",
-  );
   var results = parser.parse(args);
   User user = User();
   user.username = results["username"];

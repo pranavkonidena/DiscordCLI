@@ -27,6 +27,10 @@ void createChannel(List<String> arguments) {
     abbr: "u",
     mandatory: true,
   );
+  parser.addFlag(
+    "restrict",
+    defaultsTo: false,
+  );
 
   var results = parser.parse(arguments);
   if (results["create"] == true) {

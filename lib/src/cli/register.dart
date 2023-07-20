@@ -20,6 +20,11 @@ void registerUser(List<String> args) async {
     mandatory: true,
     abbr: "p",
   );
+  parser.addOption(
+    "role",
+    mandatory: false,
+    defaultsTo: "member",
+  );
   parser.addFlag("register", abbr: "r");
   try {
     var results = parser.parse(args);
@@ -38,6 +43,19 @@ void registerUser(List<String> args) async {
           key = await store.add(txn,
               {"username": results['username'], "messages" : [] ,"channels" : [] , "password": digest.toString()});
         });
+        if (results["role"] == "mod") {
+                  String dbPathMod = "src/db/mod_users.db";
+                  Database dbMod = await databaseFactoryIo.openDatabase(dbPathMod);
+                  var store_mod = intMapStoreFactory.store("mod_users");
+                  int key_mod;
+                  await dbMod.transaction((txn) async {
+                  key_mod = await store.add(txn, {
+                    "username": results['username'],
+                    "servers": [],
+                    "channels": [],
+                  });
+                });
+                }
         print("User ${results["username"]} registered succesfully");
         User user = User();
         user.username = results['username'];

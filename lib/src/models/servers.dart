@@ -91,7 +91,6 @@ class Channel {
     var findRecord = await store.findFirst(db, finder: finder);
     try {
       var map = cloneMap(findRecord!.value);
-      
       var list_map = map["categories_channels"] as List;
       var itemToChange = list_map[list_map.length - 1];
       try {
@@ -100,7 +99,6 @@ class Channel {
         map["categories_channels"] = list_map;
         await store.add(db, map);
         try {
-          print("Inside try block");
           Database db_users = await databaseFactoryIo.openDatabase("src/db/users.db");
           var finder_users = Finder(filter: Filter.equals("username" , results["username"]));
           var store_users = intMapStoreFactory.store("users");
@@ -113,6 +111,13 @@ class Channel {
           await store_users.delete(db_users , finder: finder_users);
           await store_users.add(db_users, map);
           print("Channel joined succesfully!");
+          if(results["restrict"] == true){
+            Database resChannels = await databaseFactoryIo.openDatabase("src/db/resChannels.db");
+            var storeResChannels = intMapStoreFactory.store("resChannels");
+            await storeResChannels.add(resChannels, {
+              "channel" : results["channel"],
+            });
+          }
         } catch (e) {
           print("Invalid user");
         }
@@ -125,4 +130,3 @@ class Channel {
   }
 }
 
-// Bugs found in create a server as exceptions are not handled properly.

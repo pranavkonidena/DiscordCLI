@@ -113,8 +113,6 @@ class loggedinUser extends User {
       if (findRecord == null) {
         print("Please login before joining a server");
       } else {
-        // findRecord[0].value.entries.last.value returns list of servers of a particular username.
-        // findRecord[0].value.entries.last.value.add(results["server"]);
         var finder_server =
             Finder(filter: Filter.equals("server", results["server"]));
         var findRecord_server =
@@ -199,7 +197,7 @@ class loggedinUser extends User {
       print("The user ${results["recipient"]} is not registered");
     } else {
       dynamic map = cloneMap(findRecord.value);
-      
+
       var entry = {
         "sender": finder_new_record[0].value["username"],
         "message": results["message"],
@@ -214,7 +212,7 @@ class loggedinUser extends User {
       } catch (e) {
         await store.add(db, map);
       }
-     
+
       print("Message sent succesfully");
     }
   }
@@ -246,8 +244,6 @@ class loggedinUser extends User {
         } catch (e) {
           await store_msg.add(db_msg, map);
         }
-        
-        
       }
     } catch (e) {}
   }
@@ -296,10 +292,32 @@ class loggedinUser extends User {
       } catch (e) {
         await store.add(db, map);
       }
-      
     }
     print("Message sent in channel succesfully.");
   }
 }
 
-class modUser extends loggedinUser {}
+class modUser extends loggedinUser {
+  void restrictedDM(dynamic results) async {
+    var dbPathLusers = "src/db/servers_users.db";
+    Database db_lusers = await databaseFactoryIo.openDatabase(dbPathLusers);
+    var finderLusers = Finder(filter: Filter.notNull("username"));
+    var store_lusers = intMapStoreFactory.store("servers_users");
+    var luserRecord = await store_lusers.findFirst(db_lusers , finder: finderLusers);
+    if(luserRecord == null){
+      print("User not logged in!");
+    }
+    else{
+      var username = luserRecord.value["username"];
+      Database db_musers = await databaseFactoryIo.openDatabase("src/db/mod_users.db");
+      var store_musers = intMapStoreFactory.store("users");
+      var modUserRecord = await store_musers.findFirst(db_musers , finder: Finder(filter: Filter.equals("username", username)));
+      if(modUserRecord == null){
+        print("You don't have access for that action");
+      }
+      else{
+        channelDM(results);
+      }
+    }
+  }
+}
