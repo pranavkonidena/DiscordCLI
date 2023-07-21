@@ -10,3 +10,4 @@
 {"key":5,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":["restricted","restricted","test"]}}]}}
 {"key":5,"deleted":true,"store":"servers_channels"}
 {"key":6,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":["restricted","restricted","test"]}},{"categories":{"2":[]}}]}}
+{"key":7,"store":"servers_channels","value":{"server":"mod","categories_channels":[]}}

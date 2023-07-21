@@ -12,3 +12,4 @@
 {"key":7,"store":"users","value":{"username":"human","messages":[],"channels":["test","restricted","restricted","restricted"],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
 {"key":7,"deleted":true,"store":"users"}
 {"key":8,"store":"users","value":{"username":"human","messages":[{"sender":"Channel restricted","message":"HI"}],"channels":["test","restricted","restricted","restricted"],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":9,"store":"users","value":{"username":"P","messages":[],"channels":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}

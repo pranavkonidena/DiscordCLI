@@ -58,9 +58,25 @@ class Server {
       for (int i = 0; i < categories.length; i++) {
         Map indiCat = categories[i]["categories"] as Map;
         print(indiCat.keys.first);
-        var duration = const Duration(seconds: 1);
+        var duration = const Duration(seconds: 2);
         sleep(duration);
       }
+    }
+  }
+
+  void printModUser(dynamic results) async {
+    Database db = await databaseFactoryIo.openDatabase("src/db/mod_users.db");
+    var store = intMapStoreFactory.store("users");
+    var findRecord =
+        await store.find(db, finder: Finder(filter: Filter.notNull("servers")));
+    print("Printing mod users in server ${results["server"]}");
+    for (int i = 0; i < findRecord.length; i++) {
+      List<dynamic> temp = findRecord[i].value["servers"] as List;
+      if (temp.contains(results["server"])) {
+        print(findRecord[i].value["username"]);
+      }
+      var duration = const Duration(seconds: 2);
+      sleep(duration);
     }
   }
 }

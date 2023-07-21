@@ -14,7 +14,7 @@ import 'src/cli/DM.dart';
 import 'src/cli/channelDM.dart';
 import 'src/cli/createCategory.dart';
 import 'src/cli/printCategory.dart';
-
+import 'src/cli/printModUser.dart';
 void main(List<String> arguments) {
   if (arguments.contains("-l") || arguments.contains("--login")) {
     loginUser(arguments);
@@ -36,12 +36,14 @@ void main(List<String> arguments) {
   } else if (arguments.contains("--channel")) {
     createChannel(arguments);
   } else if (arguments.contains("--server") &&
-      !arguments.contains("--category")) {
+      !arguments.contains("--category") && !arguments.contains("--print")) {
     createServer(arguments);
   } else if (arguments.contains("--category") && !arguments.contains("--print")) {
     createCat(arguments);
   } else if (arguments.contains("--print") && arguments.contains("--category")) {
     printCategory(arguments);
+  } else if (arguments.contains("--print") && arguments.contains("--mU")){
+    printModUser(arguments);
   }
 }
 

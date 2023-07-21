@@ -1,4 +1,4 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"servers_users","value":{"username":"human","servers":[],"channels":[]}}
+{"key":1,"store":"servers_users","value":{"username":"P","servers":[],"channels":[]}}
 {"key":1,"deleted":true,"store":"servers_users"}
-{"key":2,"store":"servers_users","value":{"username":"God","servers":[],"channels":[]}}
+{"key":2,"store":"servers_users","value":{"username":"P","servers":["mod"],"channels":[]}}
