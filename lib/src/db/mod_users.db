@@ -1,9 +1,0 @@
-{"version":1,"sembast":1}
-{"key":1,"store":"users","value":{"username":"God","servers":[],"channels":[]}}
-{"key":2,"store":"users","value":{"username":"P","servers":[],"channels":[]}}
-{"key":1,"deleted":true,"store":"users"}
-{"key":3,"store":"users","value":{"username":"God","servers":["test"],"channels":[]}}
-{"key":3,"deleted":true,"store":"users"}
-{"key":4,"store":"users","value":{"username":"God","servers":["test","mod"],"channels":[]}}
-{"key":2,"deleted":true,"store":"users"}
-{"key":5,"store":"users","value":{"username":"P","servers":["mod"],"channels":[]}}
