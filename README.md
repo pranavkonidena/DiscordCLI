@@ -12,6 +12,11 @@ For SSH
 ```
 git clone git@github.com:pranavkonidena/IMG_Dart_Ass.git
 ```
+Navigate to the cloned folder and run
+```
+dart pub get
+```
+to get all the dependencies
 
 #### Set up Alias for discodart
 _Open terminal and open the .zshrc or .bashrc file using VIM or nano_
