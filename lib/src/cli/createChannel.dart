@@ -31,6 +31,10 @@ void createChannel(List<String> arguments) {
     "restrict",
     defaultsTo: false,
   );
+  parser.addOption(
+    "type",
+    mandatory: true,
+  );
 
   var results = parser.parse(arguments);
   if (results["create"] == true) {

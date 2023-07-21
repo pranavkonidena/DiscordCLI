@@ -1,13 +1,5 @@
 {"version":1,"sembast":1}
-{"key":1,"store":"servers_channels","value":{"server":"test","categories_channels":[]}}
-{"key":1,"deleted":true,"store":"servers_channels"}
-{"key":2,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":[]}}]}}
-{"key":2,"deleted":true,"store":"servers_channels"}
-{"key":3,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":["test"]}}]}}
-{"key":3,"deleted":true,"store":"servers_channels"}
-{"key":4,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":["restricted","test"]}}]}}
-{"key":4,"deleted":true,"store":"servers_channels"}
-{"key":5,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":["restricted","restricted","test"]}}]}}
-{"key":5,"deleted":true,"store":"servers_channels"}
 {"key":6,"store":"servers_channels","value":{"server":"test","categories_channels":[{"categories":{"1":["restricted","restricted","test"]}},{"categories":{"2":[]}}]}}
-{"key":7,"store":"servers_channels","value":{"server":"mod","categories_channels":[]}}
+{"key":8,"store":"servers_channels","value":{"server":"mod","categories_channels":[{"categories":{"test":[]}}]}}
+{"key":8,"deleted":true,"store":"servers_channels"}
+{"key":9,"store":"servers_channels","value":{"server":"mod","categories_channels":[{"categories":{"test":["test1"]}}]}}

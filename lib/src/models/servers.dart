@@ -9,7 +9,7 @@ import 'package:sembast/utils/value_utils.dart';
 import 'package:collection/collection.dart';
 import '../cli/findInDatabase.dart';
 
-enum type { text, announcement, voice, stage, rules }
+List type = ["text", "announcement", "voice", "stage", "rules"];
 
 class Server {
   List<String> serverUsers = [];
@@ -121,54 +121,60 @@ class Channel {
   late String channelCategory;
 
   void createChannel(dynamic results) async {
-    //Query reg server , if server exists , user mein channels mein append krdo and server ke entry mein channel append krdo.
-    String dbPath = "src/db/servers_channels.db";
-    Database db = await databaseFactoryIo.openDatabase(dbPath);
-    var finder = Finder(filter: Filter.equals("server", results["server"]));
-    var store = intMapStoreFactory.store("servers_channels");
-    var findRecord = await store.findFirst(db, finder: finder);
-    try {
-      var map = cloneMap(findRecord!.value);
-      var list_map = map["categories_channels"] as List;
-      var itemToChange = list_map[list_map.length - 1];
+    if (type.contains(results["type"])) {
+      String dbPath = "src/db/servers_channels.db";
+      Database db = await databaseFactoryIo.openDatabase(dbPath);
+      var finder = Finder(filter: Filter.equals("server", results["server"]));
+      var store = intMapStoreFactory.store("servers_channels");
+      var findRecord = await store.findFirst(db, finder: finder);
       try {
-        (itemToChange["categories"][results["category"]] as List)
-            .insert(0, results["channel"]);
-        await store.delete(db, finder: finder);
-        map["categories_channels"] = list_map;
-        await store.add(db, map);
+        var map = cloneMap(findRecord!.value);
+        var list_map = map["categories_channels"] as List;
+        var itemToChange = list_map[list_map.length - 1];
         try {
-          Database db_users =
-              await databaseFactoryIo.openDatabase("src/db/users.db");
-          var finder_users =
-              Finder(filter: Filter.equals("username", results["username"]));
-          var store_users = intMapStoreFactory.store("users");
-          var userRecord =
-              await store_users.findFirst(db_users, finder: finder_users);
-          var map = cloneMap(userRecord!.value);
-          List duplicates = [];
-          duplicates = map["channels"] as List;
-          duplicates.add(results["channel"]);
-          map["channels"] = duplicates;
-          await store_users.delete(db_users, finder: finder_users);
-          await store_users.add(db_users, map);
-          print("Channel joined succesfully!");
-          if (results["restrict"] == true) {
-            Database resChannels =
-                await databaseFactoryIo.openDatabase("src/db/resChannels.db");
-            var storeResChannels = intMapStoreFactory.store("resChannels");
-            await storeResChannels.add(resChannels, {
-              "channel": results["channel"],
-            });
+          (itemToChange["categories"][results["category"]] as List)
+              .insert(0, results["channel"]);
+          await store.delete(db, finder: finder);
+          map["categories_channels"] = list_map;
+          await store.add(db, map);
+          try {
+            Database db_users =
+                await databaseFactoryIo.openDatabase("src/db/users.db");
+            var finder_users =
+                Finder(filter: Filter.equals("username", results["username"]));
+            var store_users = intMapStoreFactory.store("users");
+            var userRecord =
+                await store_users.findFirst(db_users, finder: finder_users);
+            var map = cloneMap(userRecord!.value);
+            List duplicates = [];
+            duplicates = map["channels"] as List;
+            duplicates.add(results["channel"]);
+            map["channels"] = duplicates;
+            await store_users.delete(db_users, finder: finder_users);
+            await store_users.add(db_users, map);
+            print("Channel joined succesfully!");
+            if (results["restrict"] == true ||
+                results["type"] == "text" ||
+                results["type"] == "announcement") {
+              Database resChannels =
+                  await databaseFactoryIo.openDatabase("src/db/resChannels.db");
+              var storeResChannels = intMapStoreFactory.store("resChannels");
+              await storeResChannels.add(resChannels, {
+                "channel": results["channel"],
+              });
+            }
+          } catch (e) {
+            print("Invalid user");
           }
         } catch (e) {
-          print("Invalid user");
+          print("That category doesn't exist.");
         }
       } catch (e) {
-        print("That category doesn't exist.");
+        print("Server doesn't exist.");
       }
-    } catch (e) {
-      print("Server doesn't exist.");
+    } else {
+      print("Invalid channel type entered!");
     }
+    //Query reg server , if server exists , user mein channels mein append krdo and server ke entry mein channel append krdo.
   }
 }
