@@ -1,3 +1,4 @@
+import 'package:discord_cli/src/cli/dbFns/equalFilter.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 import '../models/user.dart';
@@ -6,7 +7,7 @@ import 'package:args/args.dart';
 import 'dart:async';
 import 'package:sembast/utils/value_utils.dart';
 
-void addToDb(List<String> args) async {
+Future<void> addToDb(List<String> args) async {
   var parser = ArgParser();
   parser.addOption(
     "server",
@@ -23,14 +24,12 @@ void addToDb(List<String> args) async {
     abbr: "j",
     defaultsTo: false,
   );
-  
+
   var results = parser.parse(args);
   String dbPath = "src/db/servers_users.db";
-  Database db = await databaseFactoryIo.openDatabase(dbPath);
-  var store = intMapStoreFactory.store('servers_users');
-  var finder = Finder(filter: Filter.equals("username", results["username"]));
-  var findRecord = await store.find(db, finder: finder);
-  if (findRecord.isEmpty) {
+  bool isLogin = await equalQueryfind(
+      dbPath, "servers_users", "username", results["username"]);
+  if (!isLogin) {
     print("Please log in to join a server");
   } else {
     loggedinUser user = loggedinUser();

@@ -15,13 +15,13 @@ import 'src/cli/channelDM.dart';
 import 'src/cli/createCategory.dart';
 import 'src/cli/printCategory.dart';
 import 'src/cli/printModUser.dart';
-void main(List<String> arguments) {
+void main(List<String> arguments) async {
   if (arguments.contains("-l") || arguments.contains("--login")) {
-    loginUser(arguments);
+    await loginUser(arguments);
   } else if (arguments.contains("-r") || arguments.contains("--register")) {
-    registerUser(arguments);
+    await registerUser(arguments);
   } else if (arguments.contains("--logout")) {
-    logoutUser(arguments);
+    await logoutUser(arguments);
   } else if (arguments.contains("--join") || arguments.contains("-j")) {
     try {
       addToDb(arguments);
@@ -29,23 +29,20 @@ void main(List<String> arguments) {
       print(e);
     }
   } else if (arguments.contains("--dm")) {
-    dm(arguments);
+    await dm(arguments);
   } else if (arguments.contains("--channelDM")) {
-    channelDM(arguments);
+    await channelDM(arguments);
     // print("Hi");
   } else if (arguments.contains("--channel")) {
-    createChannel(arguments);
+    await createChannel(arguments);
   } else if (arguments.contains("--server") &&
       !arguments.contains("--category") && !arguments.contains("--print")) {
-    createServer(arguments);
+    await createServer(arguments);
   } else if (arguments.contains("--category") && !arguments.contains("--print")) {
-    createCat(arguments);
+    await createCat(arguments);
   } else if (arguments.contains("--print") && arguments.contains("--category")) {
-    printCategory(arguments);
+    await printCategory(arguments);
   } else if (arguments.contains("--print") && arguments.contains("--mU")){
-    printModUser(arguments);
+    await printModUser(arguments);
   }
 }
-
-// Channel locking basically will be smtg like add an atribute to the user , and save it to a databse and 
-// check if the attribute is mod finally.
