@@ -23,6 +23,7 @@ void addToDb(List<String> args) async {
     abbr: "j",
     defaultsTo: false,
   );
+  
   var results = parser.parse(args);
   String dbPath = "src/db/servers_users.db";
   Database db = await databaseFactoryIo.openDatabase(dbPath);
