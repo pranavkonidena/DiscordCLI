@@ -9,7 +9,7 @@ import '../models/user.dart';
 import 'dart:convert';
 import '../cli/joinServer.dart';
 
-loginUser(List<String> args) async {
+Future<void> loginUser(List<String> args) async {
   var parser = ArgParser();
   parser.addFlag(
     "login",

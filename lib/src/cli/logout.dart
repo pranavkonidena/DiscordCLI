@@ -3,7 +3,7 @@ import 'package:sembast/sembast.dart';
 import 'package:args/args.dart';
 import '../models/user.dart';
 
-void logoutUser(List<String> arguments) async {
+Future<void>  logoutUser(List<String> arguments) async {
   var parser = ArgParser();
   parser.addFlag(
     "logout",
@@ -13,7 +13,7 @@ void logoutUser(List<String> arguments) async {
   parser.addOption(
     "username",
     abbr: "u",
-    mandatory: true,
+    mandatory: false,
   );
 
   var results = parser.parse(arguments);

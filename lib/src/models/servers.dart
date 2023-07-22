@@ -1,12 +1,13 @@
 import 'dart:io';
-import '../cli/insertDB.dart';
 import 'package:discord_cli/src/models/user.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:sembast/utils/value_utils.dart';
 import 'package:collection/collection.dart';
-import '../cli/findInDatabase.dart';
+import '../cli/dbFns/addtoDB.dart';
+import '../cli/dbFns/equalFilter.dart';
+import '../cli/dbFns/notNullFindRecord.dart';
 
 List type = ["text", "announcement", "voice", "stage", "rules"];
 
@@ -19,24 +20,20 @@ class Server {
   void createServer(dynamic results) async {
     String dbPath = "src/db/servers_channels.db";
     String store_name = "servers_channels";
-    Database db = await databaseFactoryIo.openDatabase(dbPath);
-    var store = intMapStoreFactory.store(store_name);
-    int key;
-    await db.transaction((txn) async {
-      key = await store.add(txn, {
-        "server": serverName,
-        "categories_channels": [],
-      });
-    });
+    dynamic data = {
+      "server": serverName,
+      "categories_channels": [],
+    };
+    addToDBTxn(dbPath, store_name, data);
     print("Server created succesfully");
   }
 
   void printCategory(dynamic results) async {
-    Database db =
-        await databaseFactoryIo.openDatabase("src/db/servers_channels.db");
-    var store = intMapStoreFactory.store("servers_channels");
-    var findRecord = await store.findFirst(db,
-        finder: Finder(filter: Filter.equals("server", results["server"])));
+    var findRecord = await equalQueryFindFirstRecord(
+        "src/db/servers_channels.db",
+        "servers_channels",
+        "server",
+        results["server"]);
     if (findRecord == null) {
       print("Server entered is invalid");
     } else {
@@ -52,10 +49,8 @@ class Server {
   }
 
   void printModUser(dynamic results) async {
-    Database db = await databaseFactoryIo.openDatabase("src/db/mod_users.db");
-    var store = intMapStoreFactory.store("users");
     var findRecord =
-        await store.find(db, finder: Finder(filter: Filter.notNull("servers")));
+        await notNullFindRecord("src/db/mod_users.db", "users", "servers");
     print("Printing mod users in server ${results["server"]}");
     for (int i = 0; i < findRecord.length; i++) {
       List<dynamic> temp = findRecord[i].value["servers"] as List;
@@ -76,8 +71,11 @@ class Category {
         await databaseFactoryIo.openDatabase("src/db/servers_channels.db");
     var finder = Finder(filter: Filter.equals("server", results["server"]));
     var store = intMapStoreFactory.store("servers_channels");
-    var findRecord = await store.findFirst(db, finder: finder);
-
+    var findRecord = await equalQueryFindFirstRecord(
+        "src/db/servers_channels.db",
+        "servers_channels",
+        "server",
+        results["server"]);
     if (findRecord == null) {
       print("Server doesn't exist");
     } else {
@@ -108,12 +106,8 @@ class Channel {
   late String channelCategory;
 
   void createChannel(dynamic results) async {
-    Database db_creator =
-        await databaseFactoryIo.openDatabase("src/db/creator_users.db");
-    var store_musers = intMapStoreFactory.store("creator_users");
-    var record = await store_musers.findFirst(db_creator,
-        finder: Finder(filter: Filter.equals("username", results["username"])));
-    print(record);
+    var record = await equalQueryFindFirstRecord("src/db/creator_users.db",
+        "creator_users", "username", results["username"]);
     if (record == null) {
       print("Creator role required");
     } else {
@@ -122,11 +116,17 @@ class Channel {
         Database db = await databaseFactoryIo.openDatabase(dbPath);
         var finder = Finder(filter: Filter.equals("server", results["server"]));
         var store = intMapStoreFactory.store("servers_channels");
-        var findRecord = await store.findFirst(db, finder: finder);
+        var findRecord = await equalQueryFindFirstRecord(
+            dbPath, "servers_channels", "server", results["server"]);
         try {
           var map = cloneMap(findRecord!.value);
           var list_map = map["categories_channels"] as List;
-          var itemToChange = list_map[list_map.length - 1];
+          var itemToChange;
+          if (list_map.length > 1) {
+            itemToChange = list_map[list_map.length - 1];
+          } else {
+            itemToChange = list_map[0];
+          }
           try {
             (itemToChange["categories"][results["category"]] as List)
                 .insert(0, results["channel"]);
@@ -139,8 +139,8 @@ class Channel {
               var finder_users = Finder(
                   filter: Filter.equals("username", results["username"]));
               var store_users = intMapStoreFactory.store("users");
-              var userRecord =
-                  await store_users.findFirst(db_users, finder: finder_users);
+              var userRecord = await equalQueryFindFirstRecord(
+                  "src/db/users.db", "users", "username", results["username"]);
               var map = cloneMap(userRecord!.value);
               List duplicates = [];
               duplicates = map["channels"] as List;
@@ -166,7 +166,7 @@ class Channel {
             print("That category doesn't exist.");
           }
         } catch (e) {
-          print("Server doesn't exist.");
+          print("Category is not added in server");
         }
       } else {
         print("Invalid channel type entered!");

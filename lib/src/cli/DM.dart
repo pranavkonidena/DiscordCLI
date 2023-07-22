@@ -1,12 +1,12 @@
 
 import 'dart:math';
-
+import '../cli/dbFns/notNullFindRecord.dart';
 import 'package:args/args.dart';
 import 'package:discord_cli/src/models/user.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
-void dm(List<String> arguments) {
+Future<void>  dm(List<String> arguments) async {
   var parser = ArgParser();
   parser.addFlag(
     "dm",
@@ -24,8 +24,16 @@ void dm(List<String> arguments) {
   );
   var results = parser.parse(arguments);
   if (results["dm"] == true) {
-    loggedinUser user = loggedinUser();
+    var record = await notNullFindRecord(
+      "src/db/servers_users.db", "servers_users", "username");
+  if(record.length != 0){
+  loggedinUser user = loggedinUser();
     user.sendDM(results);
+  }
+  else{
+    print("Login to access that feature");
+  }
+    
   } else {
     print("Please read the docs!");
   }
