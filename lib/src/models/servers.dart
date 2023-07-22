@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import '../cli/insertDB.dart';
 import 'package:discord_cli/src/models/user.dart';
 import 'package:sembast/sembast.dart';
@@ -16,18 +15,6 @@ class Server {
   List<Channel> channels = [];
   List<String> categories = [];
   late String serverName;
-
-  // void create_Server(String servername) {
-  //   Server server = Server();
-  //   server.serverName = servername;
-  //   Map data = {
-  //     "server": serverName,
-  //     "categories_channels": [],
-  //   };
-  //   insertDB("src/db/servers_channels.db", data, "servers_channels");
-
-  //   print("Server created successfully.");
-  // }
 
   void createServer(dynamic results) async {
     String dbPath = "src/db/servers_channels.db";
@@ -121,60 +108,69 @@ class Channel {
   late String channelCategory;
 
   void createChannel(dynamic results) async {
-    if (type.contains(results["type"])) {
-      String dbPath = "src/db/servers_channels.db";
-      Database db = await databaseFactoryIo.openDatabase(dbPath);
-      var finder = Finder(filter: Filter.equals("server", results["server"]));
-      var store = intMapStoreFactory.store("servers_channels");
-      var findRecord = await store.findFirst(db, finder: finder);
-      try {
-        var map = cloneMap(findRecord!.value);
-        var list_map = map["categories_channels"] as List;
-        var itemToChange = list_map[list_map.length - 1];
+    Database db_creator =
+        await databaseFactoryIo.openDatabase("src/db/creator_users.db");
+    var store_musers = intMapStoreFactory.store("creator_users");
+    var record = await store_musers.findFirst(db_creator,
+        finder: Finder(filter: Filter.equals("username", results["username"])));
+    print(record);
+    if (record == null) {
+      print("Creator role required");
+    } else {
+      if (type.contains(results["type"])) {
+        String dbPath = "src/db/servers_channels.db";
+        Database db = await databaseFactoryIo.openDatabase(dbPath);
+        var finder = Finder(filter: Filter.equals("server", results["server"]));
+        var store = intMapStoreFactory.store("servers_channels");
+        var findRecord = await store.findFirst(db, finder: finder);
         try {
-          (itemToChange["categories"][results["category"]] as List)
-              .insert(0, results["channel"]);
-          await store.delete(db, finder: finder);
-          map["categories_channels"] = list_map;
-          await store.add(db, map);
+          var map = cloneMap(findRecord!.value);
+          var list_map = map["categories_channels"] as List;
+          var itemToChange = list_map[list_map.length - 1];
           try {
-            Database db_users =
-                await databaseFactoryIo.openDatabase("src/db/users.db");
-            var finder_users =
-                Finder(filter: Filter.equals("username", results["username"]));
-            var store_users = intMapStoreFactory.store("users");
-            var userRecord =
-                await store_users.findFirst(db_users, finder: finder_users);
-            var map = cloneMap(userRecord!.value);
-            List duplicates = [];
-            duplicates = map["channels"] as List;
-            duplicates.add(results["channel"]);
-            map["channels"] = duplicates;
-            await store_users.delete(db_users, finder: finder_users);
-            await store_users.add(db_users, map);
-            print("Channel joined succesfully!");
-            if (results["restrict"] == true ||
-                results["type"] == "text" ||
-                results["type"] == "announcement") {
-              Database resChannels =
-                  await databaseFactoryIo.openDatabase("src/db/resChannels.db");
-              var storeResChannels = intMapStoreFactory.store("resChannels");
-              await storeResChannels.add(resChannels, {
-                "channel": results["channel"],
-              });
+            (itemToChange["categories"][results["category"]] as List)
+                .insert(0, results["channel"]);
+            await store.delete(db, finder: finder);
+            map["categories_channels"] = list_map;
+            await store.add(db, map);
+            try {
+              Database db_users =
+                  await databaseFactoryIo.openDatabase("src/db/users.db");
+              var finder_users = Finder(
+                  filter: Filter.equals("username", results["username"]));
+              var store_users = intMapStoreFactory.store("users");
+              var userRecord =
+                  await store_users.findFirst(db_users, finder: finder_users);
+              var map = cloneMap(userRecord!.value);
+              List duplicates = [];
+              duplicates = map["channels"] as List;
+              duplicates.add(results["channel"]);
+              map["channels"] = duplicates;
+              await store_users.delete(db_users, finder: finder_users);
+              await store_users.add(db_users, map);
+              print("Channel joined succesfully!");
+              if (results["restrict"] == true ||
+                  results["type"] == "text" ||
+                  results["type"] == "announcement") {
+                Database resChannels = await databaseFactoryIo
+                    .openDatabase("src/db/resChannels.db");
+                var storeResChannels = intMapStoreFactory.store("resChannels");
+                await storeResChannels.add(resChannels, {
+                  "channel": results["channel"],
+                });
+              }
+            } catch (e) {
+              print("Invalid user");
             }
           } catch (e) {
-            print("Invalid user");
+            print("That category doesn't exist.");
           }
         } catch (e) {
-          print("That category doesn't exist.");
+          print("Server doesn't exist.");
         }
-      } catch (e) {
-        print("Server doesn't exist.");
+      } else {
+        print("Invalid channel type entered!");
       }
-    } else {
-      print("Invalid channel type entered!");
     }
-    //Query reg server , if server exists , user mein channels mein append krdo and server ke entry mein channel append krdo.
   }
 }

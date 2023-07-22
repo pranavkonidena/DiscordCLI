@@ -40,22 +40,37 @@ void registerUser(List<String> args) async {
       var findRecord = await store.find(db, finder: finder);
       if (findRecord.isEmpty) {
         await db.transaction((txn) async {
-          key = await store.add(txn,
-              {"username": results['username'], "messages" : [] ,"channels" : [] , "password": digest.toString()});
+          key = await store.add(txn, {
+            "username": results['username'],
+            "messages": [],
+            "channels": [],
+            "password": digest.toString()
+          });
         });
         if (results["role"] == "mod") {
-                  String dbPathMod = "src/db/mod_users.db";
-                  Database dbMod = await databaseFactoryIo.openDatabase(dbPathMod);
-                  var store_mod = intMapStoreFactory.store("mod_users");
-                  int key_mod;
-                  await dbMod.transaction((txn) async {
-                  key_mod = await store.add(txn, {
-                    "username": results['username'],
-                    "servers": [],
-                    "channels": [],
-                  });
-                });
-                }
+          String dbPathMod = "src/db/mod_users.db";
+          Database dbMod = await databaseFactoryIo.openDatabase(dbPathMod);
+          var store_mod = intMapStoreFactory.store("mod_users");
+          int key_mod;
+          await dbMod.transaction((txn) async {
+            key_mod = await store.add(txn, {
+              "username": results['username'],
+              "servers": [],
+              "channels": [],
+            });
+          });
+        }
+        if (results["role"] == "creator") {
+          String dbPathMod = "src/db/creator_users.db";
+          Database dbmod = await databaseFactoryIo.openDatabase(dbPathMod);
+          var store_mod = intMapStoreFactory.store("creator_users");
+          int key;
+          await dbmod.transaction((transaction) async {
+            key = await store_mod.add(transaction, {
+              "username": results["username"],
+            });
+          });
+        }
         print("User ${results["username"]} registered succesfully");
         User user = User();
         user.username = results['username'];
@@ -73,5 +88,3 @@ void registerUser(List<String> args) async {
 void main(List<String> args) {
   registerUser(args);
 }
-
-
