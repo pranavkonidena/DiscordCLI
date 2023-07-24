@@ -1,7 +1,0 @@
-{"version":1,"sembast":1}
-{"key":1,"store":"mod_users","value":{"username":"mod","servers":[],"channels":[]}}
-{"key":2,"store":"mod_users","value":{"username":"Mod","servers":[],"channels":[]}}
-{"key":3,"store":"mod_users","value":{"username":"mod2","servers":[],"channels":[]}}
-{"key":4,"store":"mod_users","value":{"username":"mod3","servers":[],"channels":[]}}
-{"key":4,"deleted":true,"store":"mod_users"}
-{"key":5,"store":"mod_users","value":{"username":"mod3","servers":["test"],"channels":[]}}
