@@ -31,7 +31,7 @@ Add the above in your terminal profile file
 You have to register a user before logging in
 Roles are of two types , by default role is set to member. However , text and announcement channels require mod user privileges to send messages. Hence , specify role accordingly.
 ```
-discodart -r -u "Username here" -p "Password here" --role "Enter mod here for mod user"
+discodart -r -u "Username here" -p "Password here" --role "Enter mod here for mod user , creator for creator user"
 ```
 
 #### Login a User
@@ -42,7 +42,7 @@ discodart -l -u "Registered username here" -p "Password here"
 
 #### Logout a user
 ```
-disodart --logout -u "Username here"
+disodart --logout
 ```
 #### Joining and creating a server
 Servers contain many users at once. They are made up of categories which are in turn made up of channels which are made up of users.
@@ -71,6 +71,7 @@ discodart --server "Server name" --category "Category name"
 ##### Adding a channel
 There are only 5 channel types - Text , Announcement , Stage , Voice , Rules.
 By default , Text and announcement channels are restricted and only mod users can send messages in those channels
+Only users with creator role can create channels
 ###### To create a channel which is not restricted
 ```
 discodart -c --channel "Channel name" --category "Category name" --server "Server Name" -u "Username here" --type "Valid type here"
