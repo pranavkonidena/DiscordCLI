@@ -1,7 +1,6 @@
-import '../models/servers.dart';
-import '../models/user.dart';
+import '../models/channels.dart';
 import 'package:args/args.dart';
-import '../cli/dbFns/notNullFindRecord.dart';
+import '../models/database.dart';
 
 Future<void>  createChannel(List<String> arguments) async {
   var parser = ArgParser();
@@ -40,7 +39,7 @@ Future<void>  createChannel(List<String> arguments) async {
   var results = parser.parse(arguments);
 
   if (results["create"] == true) {
-    var record = await notNullFindRecord(
+    var record = await Db.notNullFindRecord(
       "src/db/servers_users.db", "servers_users", "username");
   if(record.length != 0){
    Channel channel = Channel();

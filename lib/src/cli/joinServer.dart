@@ -1,11 +1,7 @@
-import 'package:discord_cli/src/cli/dbFns/equalFilter.dart';
-import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_io.dart';
+import '../models/database.dart';
 import '../models/user.dart';
-import '../models/servers.dart';
 import 'package:args/args.dart';
 import 'dart:async';
-import 'package:sembast/utils/value_utils.dart';
 
 Future<void> addToDb(List<String> args) async {
   var parser = ArgParser();
@@ -27,7 +23,7 @@ Future<void> addToDb(List<String> args) async {
 
   var results = parser.parse(args);
   String dbPath = "src/db/servers_users.db";
-  bool isLogin = await equalQueryfind(
+  bool isLogin = await Db.equalQueryfind(
       dbPath, "servers_users", "username", results["username"]);
   if (!isLogin) {
     print("Please log in to join a server");

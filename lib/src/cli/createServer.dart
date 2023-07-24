@@ -1,11 +1,7 @@
-import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_io.dart';
-import '../models/user.dart';
 import '../models/servers.dart';
 import 'package:args/args.dart';
 import 'dart:async';
-import 'package:sembast/utils/value_utils.dart';
-import '../cli/dbFns/notNullFindRecord.dart';
+import '../models/database.dart';
 
 Future<void> createServer(List<String> args) async {
   var parser = ArgParser();
@@ -16,7 +12,7 @@ Future<void> createServer(List<String> args) async {
   var results = parser.parse(args);
   
   
-  var record = await notNullFindRecord(
+  var record = await Db.notNullFindRecord(
       "src/db/servers_users.db", "servers_users", "username");
   if(record.length != 0){
   Server server = Server();

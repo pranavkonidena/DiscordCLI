@@ -1,0 +1,9 @@
+{"version":1,"sembast":1}
+{"key":1,"store":"users","value":{"username":"member","messages":[],"channels":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":8,"store":"users","value":{"username":"creator","messages":[],"channels":["channel1","channel1","channel"],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":9,"store":"users","value":{"username":"mod","messages":[{"sender":"creator","message":"Hi to mod"}],"channels":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":9,"deleted":true,"store":"users"}
+{"key":10,"store":"users","value":{"username":"mod","messages":[],"channels":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":11,"store":"users","value":{"username":"Mod","messages":[],"channels":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":12,"store":"users","value":{"username":"mod2","messages":[],"channels":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}
+{"key":13,"store":"users","value":{"username":"mod3","messages":[],"channels":[],"password":"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"}}

@@ -1,11 +1,7 @@
-import 'dart:math';
-import 'package:discord_cli/src/cli/dbFns/notNullFindRecord.dart';
-import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_memory.dart';
-import 'package:sembast/sembast_io.dart';
+import '../models/database.dart';
+import '../models/database.dart';
 import 'package:args/args.dart';
 import '../models/user.dart';
-import 'dbFns/equalFilter.dart';
 
 Future<void> channelDM(List<String> arguments) async {
   var parser = ArgParser();
@@ -23,10 +19,10 @@ Future<void> channelDM(List<String> arguments) async {
   );
 
   var results = parser.parse(arguments);
-  Future<bool> isRes = equalfQueryfindFirst(
+  Future<bool> isRes = Db.equalfQueryfindFirst(
       "src/db/resChannels.db", "resChannels", "channel", results["channel"]);
   bool res = await isRes;
-  var record = await notNullFindRecord(
+  var record = await Db.notNullFindRecord(
       "src/db/servers_users.db", "servers_users", "username");
   if (record.length != 0) {
     if (!res) {

@@ -1,19 +1,10 @@
-import 'dart:io';
-import 'package:cryptography/cryptography.dart';
 import 'package:discord_cli/src/cli/DM.dart';
-import 'package:discord_cli/src/cli/dbFns/addtoDB.dart';
-import 'package:discord_cli/src/cli/dbFns/equalFilter.dart';
-import 'servers.dart';
-import '../cli/joinServer.dart';
-import '../cli/login.dart';
-import '../cli/register.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
-import 'package:sembast/sembast_memory.dart';
 import 'package:sembast/utils/value_utils.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import '../cli/dbFns/notNullFindRecord.dart';
+import '../models/database.dart';
 
 class User {
   late String username;
@@ -26,15 +17,11 @@ class User {
       if (results['login'] == true) {
         String dbPath = "src/db/users.db";
         Database db = await databaseFactoryIo.openDatabase(dbPath);
-        Database loggeddb =
-            await databaseFactoryIo.openDatabase("src/db/servers_users.db");
         var store = intMapStoreFactory.store('users');
-        var storelog = intMapStoreFactory.store("servers_users");
         var finder =
             Finder(filter: Filter.equals("username", results["username"]));
         var findRecord = await store.find(db, finder: finder);
-        var finder_new = Finder(filter: Filter.notNull("username"));
-        var finder_new_record = await notNullFindRecord(
+        var finder_new_record = await Db.notNullFindRecord(
             "src/db/servers_users.db", "servers_users", "username");
         if (finder_new_record.length == 0) {
           if (findRecord.isEmpty) {
@@ -44,7 +31,7 @@ class User {
             var bytes = utf8.encode(results['password']);
             var digest = sha256.convert(bytes);
             if (digest.toString() == hashedPassword) {
-              var findRecord = await equalQueryFindRecord(
+              var findRecord = await Db.equalQueryFindRecord(
                   "src/db/servers_users.db",
                   "servers_users",
                   "username",
@@ -57,7 +44,7 @@ class User {
                   "servers": [],
                   "channels": [],
                 };
-                await addToDBTxn(
+                await Db.addToDBTxn(
                     'src/db/servers_users.db', "servers_users", data);
                 print("User ${results['username']} logged in succesfully");
                 readDM();
@@ -89,7 +76,7 @@ class User {
 
 class loggedinUser extends User {
   String? access;
-  joinServer(dynamic results) async {
+  void joinServer(dynamic results) async {
     if (results['join'] == true) {
       String dbPath = "src/db/servers_users.db";
       String serverdbPath = "src/db/servers_channels.db";
@@ -97,12 +84,12 @@ class loggedinUser extends User {
       var store = intMapStoreFactory.store('servers_users');
       var finder =
           Finder(filter: Filter.equals("username", results["username"]));
-      var findRecord = await equalQueryFindFirstRecord(
+      var findRecord = await Db.equalQueryFindFirstRecord(
           dbPath, "servers_users", "username", results["username"]);
       if (findRecord == null) {
         print("Please login before joining a server");
       } else {
-        var findRecord_server = await equalQueryFindRecord(
+        var findRecord_server = await Db.equalQueryFindRecord(
             serverdbPath, "servers_channels", "server", results["server"]);
         if (findRecord_server.isEmpty) {
           print("Please enter a valid server.");
@@ -123,13 +110,13 @@ class loggedinUser extends User {
               await store.add(db, map);
             }
 
-            int key;
+            
             print(
                 "User ${results["username"]} has joined the server ${results["server"]} successfully.");
 
             Database db_musers =
                 await databaseFactoryIo.openDatabase("src/db/mod_users.db");
-            var store_musers = intMapStoreFactory.store("users");
+            var store_musers = intMapStoreFactory.store("mod_users");
             var mUserRecord = await store_musers.findFirst(db_musers,
                 finder: Finder(
                     filter: Filter.equals("username", results["username"])));
@@ -151,14 +138,13 @@ class loggedinUser extends User {
     }
   }
 
-  logout(dynamic results) async {
+  void logout(dynamic results) async {
     if (results['logout'] == true) {
       try {
         Database dbU =
             await databaseFactoryIo.openDatabase("src/db/servers_users.db");
         var store1 = intMapStoreFactory.store('servers_users');
         var finder = Finder(filter: Filter.notNull("username"));
-        User user = User();
         var record = await store1.find(dbU, finder: finder);
         if (record != null) {
           await store1.delete(dbU, finder: finder);
@@ -174,7 +160,7 @@ class loggedinUser extends User {
     }
   }
 
-  sendDM(dynamic results) async {
+  void sendDM(dynamic results) async {
     var recipient = results["recipient"];
     String dbPath = "src/db/users.db";
     Database db = await databaseFactoryIo.openDatabase(dbPath);
@@ -212,7 +198,7 @@ class loggedinUser extends User {
 
   void readDM() async {
     try {
-      var findRecord = await notNullFindRecord(
+      var findRecord = await Db.notNullFindRecord(
           "src/db/servers_users.db", "servers_users", "username");
       if (findRecord.length != 0) {
         String dbPathMsg = "src/db/users.db";
@@ -241,7 +227,7 @@ class loggedinUser extends User {
   void channelDM(dynamic results) async {
     var channel = results["channel"];
     var userRecord =
-        await notNullFindRecord("src/db/users.db", "users", "username");
+        await Db.notNullFindRecord("src/db/users.db", "users", "username");
     List<dynamic> users = [];
     for (int i = 0; i < userRecord.length; i++) {
       List<dynamic> temp = userRecord[i].value["channels"] as List;
@@ -287,13 +273,13 @@ class loggedinUser extends User {
 
 class modUser extends loggedinUser {
   void restrictedDM(dynamic results) async {
-    var luserRecord = await notNullFindFirstRecord(
+    var luserRecord = await Db.notNullFindFirstRecord(
         "src/db/servers_users.db", "servers_users", "username");
     if (luserRecord == null) {
       print("User not logged in!");
     } else {
       var username = luserRecord.value["username"];
-      var modUserRecord = await equalQueryFindFirstRecord(
+      var modUserRecord = await Db.equalQueryFindFirstRecord(
           "src/db/mod_users.db", "users", "username", username);
       if (modUserRecord == null) {
         print("You don't have access for that action");

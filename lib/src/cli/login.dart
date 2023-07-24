@@ -1,13 +1,7 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:math';
-import 'package:crypto/crypto.dart';
-import 'package:sembast/sembast_io.dart';
-import 'package:sembast/sembast.dart';
 import 'package:args/args.dart';
 import '../models/user.dart';
-import 'dart:convert';
-import '../cli/joinServer.dart';
+
 
 Future<void> loginUser(List<String> args) async {
   var parser = ArgParser();
